@@ -33,12 +33,12 @@ namespace IsoRPG {
     //
     class widget{
         typedef sf::Drawable G_OBJ;
-        typedef std::unique_ptr<sf::Drawable> G_OBJ_PTR;//define alias for the underlying graphic object
+        typedef std::unique_ptr<G_OBJ> G_OBJ_PTR;//define alias for the underlying graphic object
 
         private:
             G_OBJ_PTR graphicObject_;
-        protected:
             W& w_;
+        protected:
             Textures::ID t_id_;
 
             virtual G_OBJ* getGraphic() const;
@@ -50,9 +50,9 @@ namespace IsoRPG {
 
         public:
             widget(W&);
-            virtual ~widget();
+            virtual ~widget()=0;
             //graphic
-            virtual void draw() const;
+            void draw() const;
             
             //managing graphics
             void setTextureID(Textures::ID);
@@ -75,15 +75,14 @@ namespace IsoRPG {
     ////////////////////////////
 
     class Image: public widget{
+        typedef sf::RectangleShape G_OBJ;
+        typedef G_OBJ* G_TYPE_PTR;
 
-        private:
-            std::unique_ptr<sf::RectangleShape> graphicElement_;
+        protected:
+            G_OBJ* getGraphic() const override;
         public:
             Image(W&);
             Image(W&, const sf::Texture*);
-
-            //graphic
-            virtual void draw() const override;
 
         
     };
@@ -94,8 +93,6 @@ namespace IsoRPG {
             G_TYPE_PTR getGraphic() const override;
         public:
             Box(W&);
-
-            virtual void draw() const override;
 
             //graphic maipulation
             sf::Shape* getGraphicElement();

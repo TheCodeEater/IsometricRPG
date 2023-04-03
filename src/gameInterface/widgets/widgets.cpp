@@ -10,7 +10,7 @@
 namespace IsoRPG{
     //CLASS WIDGET
     widget::widget(W& window): w_{window}{}
-    widget::~widget(){}
+    widget::~widget()=default;
 
     //events
     void widget::onClick(sf::Event const& e){} //default implementation is empty
@@ -38,16 +38,20 @@ namespace IsoRPG{
 
 // CLASSE IMAGE
 
-    Image::Image(W& window): widget(window),graphicElement_{new sf::RectangleShape()} {
+    Image::Image(W& window): widget(window) {
+        setGraphic(new sf::RectangleShape{});
     }
 
-    Image::Image(W& window, const sf::Texture* t): widget(window),graphicElement_{new sf::RectangleShape()}{
+    Image::Image(W& window, const sf::Texture* t): Image(window){
         //TEMPORARY
-        graphicElement_->setSize({Game::width,Game::height});
+        getGraphic()->setSize({Game::width,Game::height});
         //set texture
-        graphicElement_->setTexture(t);
+        getGraphic()->setTexture(t);
     }
 
+    Image::G_TYPE_PTR Image::getGraphic() const{
+        return static_cast<G_TYPE_PTR>(widget::getGraphic());
+    }
 
     //BOX
     Box::Box(W& window): widget(window){}
