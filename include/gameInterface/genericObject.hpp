@@ -5,7 +5,7 @@
 
 using W=sf::RenderWindow;
 
-// CLASSE GENERIC OBJECT - oggetto generico che può essere rappresentato
+// CLASSE GENERIC OBJECT - oggetto generico SENZA RAPPRESENTAZIONE GRAFICA
 //
 // Contenuto
 //
@@ -13,16 +13,12 @@ using W=sf::RenderWindow;
 
 namespace IsoRPG{
     class genericObject{
-        protected:
-            W& w_;
-        private:
-
         public:
-            explicit genericObject(W& window): w_{window} {};
-            virtual ~genericObject();
+            genericObject(){};
+            virtual ~genericObject(){};
 
-            virtual void draw()=0;
-            virtual void update()=0;
+            virtual void draw() const =0;
+            virtual bool update()=0;
     };
 }
 

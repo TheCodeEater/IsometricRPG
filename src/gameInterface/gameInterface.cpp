@@ -1,6 +1,6 @@
 #include "../../include/gameInterface/gameInterface.hpp"
 
-#define dummy
+#include <cassert>
 
 namespace IsoRPG
 {
@@ -9,9 +9,6 @@ namespace IsoRPG
     Game::Game(){
         w_.create(sf::VideoMode(width, height), windowTitle);
         w_.setVerticalSyncEnabled(true);
-        #ifdef dummy
-            currentWindow_=std::make_unique<windowDisplayHelloWorld>(w_);
-        #endif
     }
     Game::~Game()
     {
@@ -19,8 +16,8 @@ namespace IsoRPG
     }
 
     int Game::loop(){
-        //execute dummy
-        currentWindow_->onUpdate();
+        //make sure the first screen is initialized
+        assert(currentWindow_);
         //event loop
         while(w_.isOpen()){
 
@@ -32,14 +29,33 @@ namespace IsoRPG
                     case sf::Event::Closed :
                         w_.close();
                         break;
+                    case sf::Event::MouseButtonReleased :
+                        currentWindow_->onClick(e); //TEMPORARY IMPLEMENTATION, TO REMOVE ASAP
                     default:
                         break;
                 }
 
             }
+            //update the frame
+            w_.clear(sf::Color::Black);
+            currentWindow_->display();
+            w_.display();
 
         }
         return 0;
     }
+
+    void Game::setCurrentWindow(windowDisplayBase* screen){
+        currentWindow_=std::unique_ptr<windowDisplayBase>(screen);
+    }
+
+    windowDisplayBase* Game::getCurrentWindow(){
+        return currentWindow_.get();
+    }
+
+    sf::RenderWindow& Game::getSFMLWindow(){
+        return w_;
+    }
+
 
 }

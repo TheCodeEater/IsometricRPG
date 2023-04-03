@@ -3,7 +3,11 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <vector>
+
 #include "genericObject.hpp"
+#include "widgets/widgets.hpp"
+#include "../resourceLoader.hpp"
 
 using W=sf::RenderWindow;
 // classe base per mostrare cose a schermo
@@ -34,48 +38,57 @@ namespace IsoRPG
     // onUpdate: takes a (yet to define) custom event object containing interface-related events
     // that must be processed by the objects displayed in the current view. Must be implemented
 
-
-
     class windowDisplayBase
     {
     protected: 
         W &w_;
-        bool hasGraphicChanged_;
-
-        virtual void display() const=0;
 
     public:
-        explicit windowDisplayBase(W& window): w_{window}, hasGraphicChanged_{false} {};
+        explicit windowDisplayBase(W& window): w_{window} {};
         virtual ~windowDisplayBase();
 
-        virtual void onUpdate()=0; //to do: add a objectUpdateEvent parameter. 
+        virtual void display() const=0;
+        virtual void onClick(sf::Event const&)=0; 
     };
-
-    class windowDisplayHelloWorld: public windowDisplayBase{
-        protected:
-            virtual void display() const override;
-        private:
-
-        public:
-            explicit windowDisplayHelloWorld(W& window): windowDisplayBase(window) {};
-
-            virtual void onUpdate() override;
-    };
-
     //MENU GENERICO
     //Funzionalita
     // display: draw the menu to the window. Can be done only if the menu is updated, so its protected
     // onUpdate: update the menu, passing events to the contained objects
+    //
+    // MEMBRI VARIABILE
+    //
+    // 1 - Oggetti del menu (elements_): to be set up by constructor
 
     class Menu: public windowDisplayBase{
         protected:
-            virtual void display() const override;
+
+            std::vector<std::unique_ptr<widget>> widgets_{};
+            std::vector<std::unique_ptr<genericObject>> objects_{};
+
         private:
 
         public:
-            explicit Menu(W& window): windowDisplayBase(window) {};
+            explicit Menu(W& window);
             
-            virtual void onUpdate() override;
+            //events
+            virtual void onClick(sf::Event const&) override;
+
+            //graphics
+            virtual void display() const override;
+
+            //member access
+            std::vector<std::unique_ptr<widget>>& getWidgets();
+            std::vector<std::unique_ptr<genericObject>>& getObjects();
+    };
+
+    class MainMenu: public Menu{
+        resourcesLoader textureManager_;
+        public:
+            MainMenu(W& window);
+
+            //initial setup not overridden, uses the base class
+            
+            
     };
 }
 

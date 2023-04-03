@@ -28,9 +28,9 @@ namespace IsoRPG
         std::unique_ptr<windowDisplayBase> currentWindow_;
 
     public:
-        static inline int width = 2200;
-        static inline int height = 1600;
-        static inline std::string windowTitle = "gioco fallito";
+        static inline const int width = 2200;
+        static inline const int height = 1238;
+        static inline const std::string windowTitle = "gioco fallito";
 
         Game();
         Game(Game const &) = delete;
@@ -40,6 +40,10 @@ namespace IsoRPG
         ~Game();
 
         int loop();
+
+        void setCurrentWindow(windowDisplayBase* );
+        windowDisplayBase* getCurrentWindow();
+        sf::RenderWindow& getSFMLWindow();
     };
 
 }
