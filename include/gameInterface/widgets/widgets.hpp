@@ -52,7 +52,7 @@ namespace IsoRPG {
             widget(W&);
             virtual ~widget();
             //graphic
-            virtual void draw() const=0;
+            virtual void draw() const;
             
             //managing graphics
             void setTextureID(Textures::ID);

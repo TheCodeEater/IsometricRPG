@@ -32,6 +32,10 @@ namespace IsoRPG{
         graphicObject_=std::move(g);
     }
 
+    void widget::draw() const{
+        w_.draw(*graphicObject_);
+    }
+
 // CLASSE IMAGE
 
     Image::Image(W& window): widget(window),graphicElement_{new sf::RectangleShape()} {
@@ -42,10 +46,6 @@ namespace IsoRPG{
         graphicElement_->setSize({Game::width,Game::height});
         //set texture
         graphicElement_->setTexture(t);
-    }
-
-    void Image::draw() const{
-        w_.draw(*graphicElement_);
     }
 
 
@@ -60,10 +60,6 @@ namespace IsoRPG{
             assert(p);
             return p;
         #endif
-    }
-
-    void Box::draw() const{
-        w_.draw(*getGraphic());
     }
 
     sf::Shape* Box::getGraphicElement(){
