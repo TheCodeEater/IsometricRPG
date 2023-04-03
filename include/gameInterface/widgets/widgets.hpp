@@ -18,8 +18,9 @@ namespace IsoRPG {
     // 
     //members
     //
-    // w_ window, used to draw objects
-    // event handlers: std::function objects containing function pointers to the event handlers
+    // w_ window, used to draw objects. SFML object
+    // Texture ID: texture id based on the enum class
+    // graphicElement_ : the underlying generic graphic objects
     // 
     //FUNCTIONS
     // draw: draw the object. Subclass implement it in their own way, as each widget has a different underlying object
@@ -31,9 +32,18 @@ namespace IsoRPG {
     //getClickHandler: return a const reference to the handler
     //
     class widget{
+        typedef sf::Drawable G_OBJ;
+        typedef std::unique_ptr<sf::Drawable> G_OBJ_PTR;//define alias for the underlying graphic object
+
+        private:
+            G_OBJ_PTR graphicObject_;
         protected:
             W& w_;
             Textures::ID t_id_;
+
+            virtual G_OBJ* getGraphic() const;
+            void setGraphic(G_OBJ*);
+            void setGraphic(G_OBJ_PTR&&);
 
             //event handler
             std::function<void(void)> clickHandler;
@@ -78,8 +88,10 @@ namespace IsoRPG {
         
     };
     class Box: public widget{
+        typedef sf::Shape* G_TYPE_PTR;
+
         protected:
-            std::unique_ptr<sf::RectangleShape> graphicElement_;
+            G_TYPE_PTR getGraphic() const override;
         public:
             Box(W&);
 

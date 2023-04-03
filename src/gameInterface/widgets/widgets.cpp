@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <iostream>
 
+#define CAST_DEBUG 
+
 namespace IsoRPG{
     //CLASS WIDGET
     widget::widget(W& window): w_{window}{}
@@ -18,6 +20,16 @@ namespace IsoRPG{
     //graphics
     void widget::setTextureID(Textures::ID id){
         t_id_=id;
+    }
+     widget::G_OBJ* widget::getGraphic() const{
+        return graphicObject_.get();
+    }
+    void widget::setGraphic(G_OBJ* g){
+        graphicObject_=std::unique_ptr<G_OBJ>(g);
+    }
+
+    void widget::setGraphic(G_OBJ_PTR&& g){
+        graphicObject_=std::move(g);
     }
 
 // CLASSE IMAGE
@@ -40,12 +52,22 @@ namespace IsoRPG{
     //BOX
     Box::Box(W& window): widget(window){}
 
+    Box::G_TYPE_PTR Box::getGraphic() const{
+        #ifndef CAST_DEBUG
+            return static_cast<G_TYPE_PTR>(widget::getGraphic());
+        #else
+            auto p=dynamic_cast<G_TYPE_PTR>(widget::getGraphic());
+            assert(p);
+            return p;
+        #endif
+    }
+
     void Box::draw() const{
-        w_.draw(*graphicElement_);
+        w_.draw(*getGraphic());
     }
 
     sf::Shape* Box::getGraphicElement(){
-        return graphicElement_.get();
+        return getGraphic();
     }
 
     void Box::setTexture(const sf::Texture* t, sf::IntRect t_bound=sf::IntRect{0,0,0,0}){//by default it takes the full 
@@ -55,8 +77,8 @@ namespace IsoRPG{
             //Note: test wether the narrowing check is correctly performed
             t_bound=sf::IntRect{sf::Vector2i{0,0},sf::Vector2i{size}};
         }
-        graphicElement_->setTexture(t);
-        graphicElement_->setTextureRect(t_bound);
+        getGraphic()->setTexture(t);
+        getGraphic()->setTextureRect(t_bound);
     }
 
 
@@ -66,14 +88,14 @@ namespace IsoRPG{
 
         sf::RectangleShape* sh=new sf::RectangleShape({300,100});
         sh->setPosition(500,700);
-        graphicElement_=std::unique_ptr<sf::RectangleShape>(sh);
+        setGraphic(sh);
     }
 
     void Button::onClick(sf::Event const& e){
         //check wether the left mouse button was clicked
         if(e.mouseButton.button==sf::Mouse::Left){
             //if so, test wether the mouse cursor is over the object
-            if(graphicElement_->getGlobalBounds().contains(e.mouseButton.x,e.mouseButton.y)){
+            if(getGraphic()->getGlobalBounds().contains(e.mouseButton.x,e.mouseButton.y)){
                 //call the handler if so
                 clickHandler();
             }
