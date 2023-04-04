@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <vector>
+#include <stdexcept>
 
 #include "genericObject.hpp"
 #include "widgets/widgets.hpp"
@@ -83,6 +84,7 @@ namespace IsoRPG
 
     class MainMenu: public Menu{
         resourcesLoader textureManager_;
+        sf::Font f;//temporary
         public:
             MainMenu(W& window);
 

@@ -18,7 +18,14 @@ void Menu::onClick(sf::Event const& e){
   //call the click handler on each object
   std::for_each(widgets_.begin(),widgets_.end(),[e](std::unique_ptr<widget> & widget){
     //call the click handler on the widget
-    widget->onClick(e);
+    try{
+      widget->onClick(e);
+    }catch(std::bad_function_call& e){
+      std::cerr<<e.what();
+      std::cerr<<"\nLikely the function object event handler isn't set up correctly\n";
+      std::cerr<<"ERROR: action associated with the button not performed\n";
+    }
+    
   });
 }
 
@@ -40,27 +47,24 @@ std::vector<std::unique_ptr<genericObject>>& Menu::getObjects(){
 // CLASS MAINMENU
 MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
     //load textures
-    textureManager_.load(Textures::ID::mainMenuBackground,"main_menu_background.jpg");
-    textureManager_.load(Textures::ID::mainButtonBackground,"button_background.png");
+    try{
+      textureManager_.load(Textures::ID::mainMenuBackground,"main_menu_background.jpg");
+      textureManager_.load(Textures::ID::mainButtonBackground,"button_background.png");
+      if(!f.loadFromFile("resources/fonts/gun4fsi.ttf")){
+        throw std::runtime_error("Couldn't load font!");
+      }
+    }catch(std::runtime_error& e){
+      std::cerr<<e.what();
+    }
+    //load font
+    
+    widgets_.push_back(std::make_unique<TextLine>(w_,"prova",f));
     //set background image
     widgets_.push_back(std::make_unique<Image>(w_,textureManager_.get(Textures::ID::mainMenuBackground)));
 
-    
-    //create the dummy button
-    std::unique_ptr<Button> b(new Button(w_));
-    b->setClickHandler([](){std::cout<<"Hello world!";});
-    //set appropriate position
-    auto e=b->getGraphicElement();
-    e->setPosition((2200-150)/2,500);//centra orizzonatlmente
-    
-    //forgive me, it is just a test
-    sf::Texture* t=new sf::Texture();
-    t->setSmooth(true);
-    t->loadFromFile("resources/assets/button_background.png");
-    b->setTexture(t,{0,0,0,0});
+    widgets_.push_back(std::make_unique<Button>(w_,sf::Vector2f{(2200-150)/2,500},sf::Vector2f{300,100},textureManager_.get(Textures::ID::mainButtonBackground)));
     
     //populate the main menu with objects
-    widgets_.push_back(std::move(b));
 }
 
 }  // namespace IsoRPG

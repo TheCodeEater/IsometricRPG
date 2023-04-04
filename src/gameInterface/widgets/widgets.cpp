@@ -5,8 +5,6 @@
 #include <stdexcept>
 #include <iostream>
 
-#define CAST_DEBUG 
-
 namespace IsoRPG{
     //CLASS WIDGET
     widget::widget(W& window): w_{window}{}
@@ -38,7 +36,7 @@ namespace IsoRPG{
 
 // CLASSE IMAGE
 
-    Image::Image(W& window): widget(window) {
+    Image::Image(W& window): widget(window) {//creates empty image - for testing
         setGraphic(new sf::RectangleShape{});
     }
 
@@ -85,10 +83,17 @@ namespace IsoRPG{
     //BUTTON
     Button::Button(W& window): Box(window){
         setClickHandler(std::function<void(void)>([](){}));//do nothing by default
+    }
 
-        sf::RectangleShape* sh=new sf::RectangleShape({300,100});
-        sh->setPosition(500,700);
-        setGraphic(sh);
+    Button::Button(W& window, sf::Vector2f pos,sf::Vector2f size, const sf::Texture* t): Button{window}{
+        //create rectangle
+        auto rect=new sf::RectangleShape{size};
+        //set posotion
+        rect->setPosition(pos);
+        //set texture
+        rect->setTexture(t);
+        //add rectangle to the graphic object
+        setGraphic(rect);
     }
 
     void Button::onClick(sf::Event const& e){
@@ -100,6 +105,14 @@ namespace IsoRPG{
                 clickHandler();
             }
         }
+    }
+
+    //TEXT LINE
+    TextLine::TextLine(W& window, const char* txt,sf::Font& f): Box{window},text{txt}{
+        auto textArea=new sf::Text(text,f);
+
+        textArea->setPosition(500,500);
+        setGraphic(textArea);
     }
 
 }

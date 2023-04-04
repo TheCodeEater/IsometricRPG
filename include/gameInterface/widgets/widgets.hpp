@@ -105,9 +105,18 @@ namespace IsoRPG {
 
         public:
             Button(W&);
+            Button(W& window, sf::Vector2f pos,sf::Vector2f size, const sf::Texture* t);
 
             //events
             virtual void onClick(sf::Event const&) override;
+     };
+
+     class TextLine: public Box{
+        typedef char C_TYPE;
+        private:
+            std::string text;
+        public:
+            TextLine(W& window, const char* txt,sf::Font& f);
      };
 
 }  // namespace IsoRPG
