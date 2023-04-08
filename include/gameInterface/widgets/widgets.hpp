@@ -45,6 +45,9 @@ namespace IsoRPG {
             void setGraphic(G_OBJ*);
             void setGraphic(G_OBJ_PTR&&);
 
+            //interface for updating graphic object based on data members
+            virtual void update();
+
             //event handler
             std::function<void(void)> clickHandler;
 
@@ -111,12 +114,23 @@ namespace IsoRPG {
             virtual void onClick(sf::Event const&) override;
      };
 
-     class TextLine: public Box{
+     class TextLine: public widget{
         typedef char C_TYPE;
+        typedef sf::Text* G_TYPE_PTR;
+
         private:
-            std::string text;
+            std::string text_;
+        protected:
+            G_TYPE_PTR getGraphic() const override;
+
+            //for updating internal status based on data members
+            void update() override;
         public:
-            TextLine(W& window, const char* txt,sf::Font& f);
+            TextLine(W& window, sf::Vector2f pos, const char* txt,sf::Font& f,sf::Color c=sf::Color::Black);
+
+            void setText(std::string& txt);
+            std::string const& getText() const;
+
      };
 
 }  // namespace IsoRPG

@@ -11,9 +11,12 @@ namespace IsoRPG{
     widget::~widget()=default;
 
     //events
-    void widget::onClick(sf::Event const& e){} //default implementation is empty
+    void widget::onClick(sf::Event const&){} //default implementation is empty
     void widget::setClickHandler(std::function<void(void)>&& h){clickHandler=h;}
     std::function<void(void)> const& widget::getClickHandler() const{return clickHandler;}
+
+    //updating
+    void widget::update(){}
 
     //graphics
     void widget::setTextureID(Textures::ID id){
@@ -108,11 +111,31 @@ namespace IsoRPG{
     }
 
     //TEXT LINE
-    TextLine::TextLine(W& window, const char* txt,sf::Font& f): Box{window},text{txt}{
-        auto textArea=new sf::Text(text,f);
+    TextLine::TextLine(W& window, sf::Vector2f pos,const char* txt,sf::Font& f,sf::Color c): widget{window},text_{txt}{
+        auto textArea=new sf::Text(text_,f);
 
-        textArea->setPosition(500,500);
+        textArea->setPosition(pos);
+        textArea->setFillColor(c);
         setGraphic(textArea);
+    }
+
+    //updating
+    void TextLine::update(){
+        auto p=getGraphic();
+        p->setString(text_);
+    }
+
+    TextLine::G_TYPE_PTR TextLine::getGraphic() const{
+        return static_cast<G_TYPE_PTR>(widget::getGraphic());
+    }
+
+    std::string const& TextLine::getText() const{
+        return text_;
+    }
+
+    void TextLine::setText(std::string& txt){
+        text_=txt;
+        update();
     }
 
 }

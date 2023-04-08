@@ -50,7 +50,7 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
     try{
       textureManager_.load(Textures::ID::mainMenuBackground,"main_menu_background.jpg");
       textureManager_.load(Textures::ID::mainButtonBackground,"button_background.png");
-      if(!f.loadFromFile("resources/fonts/gun4fsi.ttf")){
+      if(!f.loadFromFile("resources/fonts/gun4f.ttf")){
         throw std::runtime_error("Couldn't load font!");
       }
     }catch(std::runtime_error& e){
@@ -58,13 +58,14 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
     }
     //load font
     
-    widgets_.push_back(std::make_unique<TextLine>(w_,"prova",f));
+   
     //set background image
     widgets_.push_back(std::make_unique<Image>(w_,textureManager_.get(Textures::ID::mainMenuBackground)));
 
-    widgets_.push_back(std::make_unique<Button>(w_,sf::Vector2f{(2200-150)/2,500},sf::Vector2f{300,100},textureManager_.get(Textures::ID::mainButtonBackground)));
+    widgets_.push_back(std::make_unique<Button>(w_,sf::Vector2f{(2200-300)/2,500},sf::Vector2f{300,100},textureManager_.get(Textures::ID::mainButtonBackground)));
     
     //populate the main menu with objects
+     widgets_.push_back(std::make_unique<TextLine>(w_,sf::Vector2f{(2200-300)/2+0.5*(300-4*30),500+0.5*(100-30)},"Play",f,sf::Color::Yellow));
 }
 
 }  // namespace IsoRPG
