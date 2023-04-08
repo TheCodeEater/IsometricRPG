@@ -1,14 +1,13 @@
 #ifndef GAME_INTERFACE
 #define GAME_INTERFACE
 
-#include <string>
-#include <memory>
-
 #include <SFML/Graphics.hpp>
+#include <memory>
+#include <string>
 
 #include "gameScreens.hpp"
 
-using W=sf::RenderWindow;
+using W = sf::RenderWindow;
 
 // header per l'interfaccia di gioco base
 // Contenuti:
@@ -19,33 +18,31 @@ using W=sf::RenderWindow;
 //  1 - finestra
 //  2 - schermata attuale. puntatore unico, solo io posso controllarla
 
-namespace IsoRPG
-{
+namespace IsoRPG {
 
-    class Game
-    {
-        W w_;
-        std::unique_ptr<windowDisplayBase> currentWindow_;
+class Game {
+  W w_;
+  std::unique_ptr<windowDisplayBase> currentWindow_;
 
-    public:
-        static inline const int width = 2200;
-        static inline const int height = 1238;
-        static inline const std::string windowTitle = "gioco fallito";
+ public:
+  static inline const int width = 2200;
+  static inline const int height = 1238;
+  static inline const std::string windowTitle = "gioco fallito";
 
-        Game();
-        Game(Game const &) = delete;
-        Game(Game &&) = delete;
-        Game &operator=(Game const &) = delete;
-        Game &operator=(Game &&) = delete;
-        ~Game();
+  Game();
+  Game(Game const &) = delete;
+  Game(Game &&) = delete;
+  Game &operator=(Game const &) = delete;
+  Game &operator=(Game &&) = delete;
+  ~Game();
 
-        int loop();
+  int loop();
 
-        void setCurrentWindow(windowDisplayBase* );
-        windowDisplayBase* getCurrentWindow();
-        sf::RenderWindow& getSFMLWindow();
-    };
+  void setCurrentWindow(windowDisplayBase *);
+  windowDisplayBase *getCurrentWindow();
+  sf::RenderWindow &getSFMLWindow();
+};
 
-}
+}  // namespace IsoRPG
 
 #endif
