@@ -1,0 +1,9 @@
+#Exclude folders
+build/
+build-debug/
+
+
+#Files
+*.out
+*.asm
+*.bin
