@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <stdexcept>
 #include <vector>
+#include <unordered_map>
+#include <utility>
 
 #include "../resourceLoader.hpp"
 #include "genericObject.hpp"
@@ -60,13 +62,22 @@ class windowDisplayBase {
 //  1 - Oggetti del menu (elements_): to be set up by constructor
 
 class Menu : public windowDisplayBase {
+  std::unordered_map<std::string,std::unique_ptr<widget>> widgets_;
  protected:
-  std::vector<std::unique_ptr<widget>> widgets_{};
   std::vector<std::unique_ptr<genericObject>> objects_{};
 
- private:
+  //widget accessing interface
+  std::pair<std::string,std::unique_ptr<widget>> make_widget(std::string& data);
+  
+  void add_widget(std::string,std::unique_ptr<widget>);
+  void add_widget(std::pair<std::string,std::unique_ptr<widget>>&&);
+
+
  public:
   explicit Menu(W& window);
+
+  //loading
+  void loadContent(std::string& filename);
 
   // events
   virtual void onClick(sf::Event const&) override;

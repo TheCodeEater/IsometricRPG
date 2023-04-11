@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 namespace IsoRPG {
 // CLASSE WINDOW DISPLAY BASE
@@ -13,6 +15,38 @@ Menu::Menu(W& window)
     : windowDisplayBase(window){};  // the default menu has no elements
 
 // CLASS MENU
+//
+void Menu::loadContent(std::string& filename){//create widgets according to a file
+  //open file
+  std::ifstream wid_data(filename);
+  assert(wid_data);
+
+  //read line by line
+  while(wid_data){
+    std::string l{};
+    std::getline(wid_data,l);
+    //make widget
+    auto pippo=make_widget(l);
+    //add widget. 
+    add_widget(std::move(pippo));
+  }
+}
+
+std::pair<std::string,std::unique_ptr<widget>> Menu::make_widget(std::string& data){
+
+}
+
+void Menu::add_widget(std::string name,std::unique_ptr<widget> widget){
+  //add widget to the map, moving the corresponding smart pointer
+  bool inserted=widgets_.insert({name,std::move(widget)}).second;
+  if(!inserted){//if the element already existed, throw
+    throw std::logic_error("The widgets the menu is trying to create already exist!");
+  }
+}
+void Menu::add_widget(std::pair<std::string,std::unique_ptr<widget>>&& wid){
+  //interlayy split the pair
+  add_widget(wid.first,std::move(wid.second));
+}
 
 void Menu::onClick(sf::Event const& e) {
   // call the click handler on each object
