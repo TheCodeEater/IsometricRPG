@@ -16,36 +16,13 @@ Menu::Menu(W& window)
 
 // CLASS MENU
 //
-void Menu::loadContent(std::string& filename){//create widgets according to a file
-  //open file
-  std::ifstream wid_data(filename);
-  assert(wid_data);
 
-  //read line by line
-  while(wid_data){
-    std::string l{};
-    std::getline(wid_data,l);
-    //make widget
-    auto pippo=make_widget(l);
-    //add widget. 
-    add_widget(std::move(pippo));
-  }
-}
-
-std::pair<std::string,std::unique_ptr<widget>> Menu::make_widget(std::string& data){
+std::unique_ptr<widget> Menu::make_widget(std::string& data){
 
 }
 
-void Menu::add_widget(std::string name,std::unique_ptr<widget> widget){
-  //add widget to the map, moving the corresponding smart pointer
-  bool inserted=widgets_.insert({name,std::move(widget)}).second;
-  if(!inserted){//if the element already existed, throw
-    throw std::logic_error("The widgets the menu is trying to create already exist!");
-  }
-}
-void Menu::add_widget(std::pair<std::string,std::unique_ptr<widget>>&& wid){
-  //interlayy split the pair
-  add_widget(wid.first,std::move(wid.second));
+void Menu::add_widget(std::unique_ptr<widget>&& wid){
+  widgets_.insert(widgets_.end(),std::move(wid));
 }
 
 void Menu::onClick(sf::Event const& e) {
@@ -71,7 +48,7 @@ void Menu::display() const {
                 [](std::unique_ptr<widget> const& widget) { widget->draw(); });
 }
 
-std::vector<std::unique_ptr<widget>>& Menu::getWidgets() { return widgets_; }
+Menu::WIDGET_CONTAINER& Menu::getWidgets() { return widgets_; }
 
 std::vector<std::unique_ptr<genericObject>>& Menu::getObjects() {
   return objects_;
@@ -94,15 +71,15 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
   // load font
 
   // set background image
-  widgets_.push_back(std::make_unique<Image>(
+  add_widget(std::make_unique<Image>(
       w_, textureManager_.get(Textures::ID::mainMenuBackground)));
 
-  widgets_.push_back(std::make_unique<Button>(
+  add_widget(std::make_unique<Button>(
       w_, sf::Vector2f{(2200 - 300) / 2, 500}, sf::Vector2f{300, 100},
       textureManager_.get(Textures::ID::mainButtonBackground)));
 
   // populate the main menu with objects
-  widgets_.push_back(std::make_unique<TextLine>(
+  add_widget(std::make_unique<TextLine>(
       w_,
       sf::Vector2f{(2200 - 300) / 2 + 0.5 * (300 - 4 * 30),
                    500 + 0.5 * (100 - 30)},

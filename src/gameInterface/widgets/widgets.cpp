@@ -80,7 +80,7 @@ void Box::setTexture(const sf::Texture* t,
 
 // BUTTON
 Button::Button(W& window) : Box(window) {
-  setClickHandler(std::function<void(void)>([]() {}));  // do nothing by default
+  setClickHandler(std::function<void(void)>([]() {std::cout<<"Hello world\n";}));  // do nothing by default
 }
 
 Button::Button(W& window, sf::Vector2f pos, sf::Vector2f size,
