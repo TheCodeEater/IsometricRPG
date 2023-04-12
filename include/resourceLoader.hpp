@@ -27,6 +27,7 @@ class resourcesLoader {
   resourcesLoader operator=(resourcesLoader&&) = delete;
 
   void load(Textures::ID, std::string const&);
+  void loadFromPath(Textures::ID, std::string const&);
 
   const sf::Texture* get(Textures::ID);
 };

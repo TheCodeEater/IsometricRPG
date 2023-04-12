@@ -6,6 +6,10 @@ void resourcesLoader::load(Textures::ID id, std::string const& filename) {
   // build the path to the file
   std::string path = "resources/assets/" + filename;
   // open the file
+  loadFromPath(id, path);
+}
+
+void resourcesLoader::loadFromPath(Textures::ID id, std::string const& path) {
   T_ptr texture(new sf::Texture());
   if (!texture->loadFromFile(path)) {
     throw std::runtime_error("Resources Loader: cannot load " + path +
