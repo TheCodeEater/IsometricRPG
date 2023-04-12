@@ -1,8 +1,8 @@
 #include "../../include/gameInterface/gameScreens.hpp"
 
 #include <algorithm>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <sstream>
 
 namespace IsoRPG {
@@ -17,12 +17,10 @@ Menu::Menu(W& window)
 // CLASS MENU
 //
 
-std::unique_ptr<widget> Menu::make_widget(std::string& data){
+std::unique_ptr<widget> Menu::make_widget(std::string& data) {}
 
-}
-
-void Menu::addWidget(std::unique_ptr<widget>&& wid){
-  widgets_.insert(widgets_.end(),std::move(wid));
+void Menu::addWidget(std::unique_ptr<widget>&& wid) {
+  widgets_.insert(widgets_.end(), std::move(wid));
 }
 
 void Menu::onClick(sf::Event const& e) {
@@ -48,11 +46,12 @@ void Menu::display() const {
                 [](std::unique_ptr<widget> const& widget) { widget->draw(); });
 }
 
-void Menu::updateWidgets(){
-  widgets_.sort([](std::unique_ptr<widget> const& a, std::unique_ptr<widget> const& b){
-    //sort in descending order by z index
-    return b->getZInd() > a->getZInd();
-  });
+void Menu::updateWidgets() {
+  widgets_.sort(
+      [](std::unique_ptr<widget> const& a, std::unique_ptr<widget> const& b) {
+        // sort in descending order by z index
+        return b->getZInd() < a->getZInd();
+      });
 }
 
 Menu::WIDGET_CONTAINER& Menu::getWidgets() { return widgets_; }
@@ -91,9 +90,9 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
       sf::Vector2f{(2200 - 300) / 2 + 0.5 * (300 - 4 * 30),
                    500 + 0.5 * (100 - 30)},
       "Play", f, sf::Color::Yellow));
-}
 
-//sort widgets by z index
-updateWidgets();
+  // sort widgets by z index
+  updateWidgets();
+}
 
 }  // namespace IsoRPG
