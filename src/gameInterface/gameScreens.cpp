@@ -66,7 +66,7 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
   // load textures
   try {
     textureManager_.load(Textures::ID::mainMenuBackground,
-                         "main_menu_background.jpg");
+                         "background2.jpg");
     textureManager_.load(Textures::ID::mainButtonBackground,
                          "button_background.png");
     textureManager_.load(Textures::ID::characterPortrait,
@@ -102,13 +102,16 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
 
     sf::Vector2f ch_name_pos{0, 1200};  // temporary
     addWidget(std::make_unique<TextLine>(w_, ch_name_pos, c_name.c_str(), f,
-                                         sf::Color::Red));
+                                         sf::Color::Yellow));
 
     // create character portrait
     addWidget(std::make_unique<Image>(
         w_, textureManager_.get(Textures::ID::characterPortrait),
-        sf::Vector2f{800, 800}, sf::Vector2f{400, 400}));
+        sf::Vector2f{50, 50}, sf::Vector2f{200, 300}));
   }
+
+  //create main title
+  addWidget(std::make_unique<TextLine>(w_,sf::Vector2f{300,50},"IsoRPG",f,sf::Color::Green));
 
   // sort widgets by z index
   updateWidgets();
