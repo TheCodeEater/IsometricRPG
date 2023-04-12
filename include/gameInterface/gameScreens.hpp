@@ -71,7 +71,7 @@ class Menu : public windowDisplayBase {
   //widget accessing interface
   std::unique_ptr<widget> make_widget(std::string& data);
   
-  void add_widget(std::unique_ptr<widget>&&);
+  void addWidget(std::unique_ptr<widget>&&);
   
 
  public:

@@ -21,7 +21,7 @@ std::unique_ptr<widget> Menu::make_widget(std::string& data){
 
 }
 
-void Menu::add_widget(std::unique_ptr<widget>&& wid){
+void Menu::addWidget(std::unique_ptr<widget>&& wid){
   widgets_.insert(widgets_.end(),std::move(wid));
 }
 
@@ -71,15 +71,15 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
   // load font
 
   // set background image
-  add_widget(std::make_unique<Image>(
+  addWidget(std::make_unique<Image>(
       w_, textureManager_.get(Textures::ID::mainMenuBackground)));
 
-  add_widget(std::make_unique<Button>(
+  addWidget(std::make_unique<Button>(
       w_, sf::Vector2f{(2200 - 300) / 2, 500}, sf::Vector2f{300, 100},
       textureManager_.get(Textures::ID::mainButtonBackground)));
 
   // populate the main menu with objects
-  add_widget(std::make_unique<TextLine>(
+  addWidget(std::make_unique<TextLine>(
       w_,
       sf::Vector2f{(2200 - 300) / 2 + 0.5 * (300 - 4 * 30),
                    500 + 0.5 * (100 - 30)},
