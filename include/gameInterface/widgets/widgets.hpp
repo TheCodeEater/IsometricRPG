@@ -78,26 +78,6 @@ class widget {
   std::function<void(void)> const& getClickHandler() const;
 };
 
-// CLASS IMAGE: represents an image that can be drawn inside a rectangle
-//
-// Members
-//
-// Graphic element: the graphic object that contains the image
-//
-////////////////////////////
-
-class Image : public widget {
-  typedef sf::RectangleShape G_OBJ;
-  typedef G_OBJ* G_TYPE_PTR;
-
- protected:
-  G_OBJ* getGraphic() const override;
-
- public:
-  Image(W&, Z_IND_T);
-  Image(W&, const sf::Texture*,Z_IND_T z_index=0);
-  Image(W&, const sf::Texture*,sf::Vector2f pos, sf::Vector2f size,Z_IND_T z_index=0);
-};
 class Box : public widget {
   typedef sf::Shape* G_TYPE_PTR;
 
@@ -111,6 +91,27 @@ class Box : public widget {
   sf::Shape* getGraphicElement();
 
   void setTexture(const sf::Texture*, sf::IntRect);
+};
+
+// CLASS IMAGE: represents an image that can be drawn inside a rectangle
+//
+// Members
+//
+// Graphic element: the graphic object that contains the image
+//
+////////////////////////////
+
+class Image : public Box {
+  typedef sf::RectangleShape G_OBJ;
+  typedef G_OBJ* G_TYPE_PTR;
+
+ protected:
+  G_TYPE_PTR getGraphic() const override;
+
+ public:
+  Image(W&, Z_IND_T);
+  Image(W&, const sf::Texture*,Z_IND_T z_index=0);
+  Image(W&, const sf::Texture*,sf::Vector2f pos, sf::Vector2f size,Z_IND_T z_index=0);
 };
 
 class Button : public Box {

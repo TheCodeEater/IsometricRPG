@@ -43,7 +43,7 @@ void widget::setZInd(Z_IND_T value) {
 // CLASSE IMAGE
 
 Image::Image(W& window, Z_IND_T z_index = 0)
-    : widget(window, z_index) {  // creates empty image - for testing
+    : Box(window, z_index) {  // creates empty image - for testing
   setGraphic(new sf::RectangleShape{});
 }
 
