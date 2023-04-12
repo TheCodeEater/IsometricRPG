@@ -72,7 +72,7 @@ class Menu : public windowDisplayBase {
   std::unique_ptr<widget> make_widget(std::string& data);
   
   void addWidget(std::unique_ptr<widget>&&);
-  
+  void updateWidgets();
 
  public:
   explicit Menu(W& window);

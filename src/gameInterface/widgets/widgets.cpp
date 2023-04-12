@@ -33,6 +33,15 @@ void widget::setGraphic(G_OBJ_PTR&& g) { graphicObject_ = std::move(g); }
 
 void widget::draw() const { w_.draw(*graphicObject_); }
 
+widget::Z_IND_T widget::getZInd() const{
+  return z_index_;
+}
+
+void widget::setZInd(Z_IND_T value){
+  //set the value
+  z_index_=value;
+}
+
 // CLASSE IMAGE
 
 Image::Image(W& window) : widget(window) {  // creates empty image - for testing

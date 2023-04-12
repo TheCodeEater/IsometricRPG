@@ -37,11 +37,12 @@ class widget {
   typedef sf::Drawable G_OBJ;
   typedef std::unique_ptr<G_OBJ>
       G_OBJ_PTR;  // define alias for the underlying graphic object
+  typedef short Z_IND_T;
 
  private:
   G_OBJ_PTR graphicObject_;
   W& w_;
-
+  Z_IND_T z_index_{};
  protected:
   Textures::ID t_id_;
 
@@ -60,6 +61,10 @@ class widget {
   virtual ~widget() = 0;
   // graphic
   void draw() const;
+
+  //graphic positioning
+  Z_IND_T getZInd() const;
+  void setZInd(Z_IND_T value);
 
   // managing graphics
   void setTextureID(Textures::ID);

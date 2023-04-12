@@ -48,6 +48,13 @@ void Menu::display() const {
                 [](std::unique_ptr<widget> const& widget) { widget->draw(); });
 }
 
+void Menu::updateWidgets(){
+  widgets_.sort([](std::unique_ptr<widget> const& a, std::unique_ptr<widget> const& b){
+    //sort in descending order by z index
+    return b->getZInd() > a->getZInd();
+  });
+}
+
 Menu::WIDGET_CONTAINER& Menu::getWidgets() { return widgets_; }
 
 std::vector<std::unique_ptr<genericObject>>& Menu::getObjects() {
@@ -74,16 +81,19 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
   addWidget(std::make_unique<Image>(
       w_, textureManager_.get(Textures::ID::mainMenuBackground)));
 
+  // populate the main menu with objects
   addWidget(std::make_unique<Button>(
       w_, sf::Vector2f{(2200 - 300) / 2, 500}, sf::Vector2f{300, 100},
       textureManager_.get(Textures::ID::mainButtonBackground)));
 
-  // populate the main menu with objects
   addWidget(std::make_unique<TextLine>(
       w_,
       sf::Vector2f{(2200 - 300) / 2 + 0.5 * (300 - 4 * 30),
                    500 + 0.5 * (100 - 30)},
       "Play", f, sf::Color::Yellow));
 }
+
+//sort widgets by z index
+updateWidgets();
 
 }  // namespace IsoRPG
