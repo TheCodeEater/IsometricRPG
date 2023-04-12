@@ -7,7 +7,7 @@
 
 namespace IsoRPG {
 // CLASS WIDGET
-widget::widget(W& window,Z_IND_T zindex) : w_{window}, z_index_{zindex} {}
+widget::widget(W& window, Z_IND_T zindex) : w_{window}, z_index_{zindex} {}
 widget::~widget() = default;
 
 // events
@@ -33,26 +33,33 @@ void widget::setGraphic(G_OBJ_PTR&& g) { graphicObject_ = std::move(g); }
 
 void widget::draw() const { w_.draw(*graphicObject_); }
 
-widget::Z_IND_T widget::getZInd() const{
-  return z_index_;
-}
+widget::Z_IND_T widget::getZInd() const { return z_index_; }
 
-void widget::setZInd(Z_IND_T value){
-  //set the value
-  z_index_=value;
+void widget::setZInd(Z_IND_T value) {
+  // set the value
+  z_index_ = value;
 }
 
 // CLASSE IMAGE
 
-Image::Image(W& window, Z_IND_T z_index=0) : widget(window,z_index) {  // creates empty image - for testing
+Image::Image(W& window, Z_IND_T z_index = 0)
+    : widget(window, z_index) {  // creates empty image - for testing
   setGraphic(new sf::RectangleShape{});
 }
 
-Image::Image(W& window, const sf::Texture* t) : Image(window) {
-  // TEMPORARY
-  getGraphic()->setSize({Game::width, Game::height});
+Image::Image(W& window, const sf::Texture* t, Z_IND_T z_index)
+    : Image(window, t, sf::Vector2f{0, 0},
+            sf::Vector2f{Game::width, Game::height}, z_index) {}
+
+Image::Image(W& window, const sf::Texture* t, sf::Vector2f pos,
+             sf::Vector2f size, Z_IND_T z_index)
+    : Image{window, z_index} {
+  auto g = getGraphic();
+  // set size and position
+  g->setSize(size);
+  g->setPosition(pos);
   // set texture
-  getGraphic()->setTexture(t);
+  g->setTexture(t);
 }
 
 Image::G_TYPE_PTR Image::getGraphic() const {
@@ -60,7 +67,7 @@ Image::G_TYPE_PTR Image::getGraphic() const {
 }
 
 // BOX
-Box::Box(W& window, Z_IND_T z_index) : widget(window,z_index) {}
+Box::Box(W& window, Z_IND_T z_index) : widget(window, z_index) {}
 
 Box::G_TYPE_PTR Box::getGraphic() const {
 #ifndef CAST_DEBUG
@@ -88,13 +95,14 @@ void Box::setTexture(const sf::Texture* t,
 }
 
 // BUTTON
-Button::Button(W& window,Z_IND_T z_index) : Box(window, z_index) {
-  setClickHandler(std::function<void(void)>([]() {std::cout<<"Hello world\n";}));  // do nothing by default
+Button::Button(W& window, Z_IND_T z_index) : Box(window, z_index) {
+  setClickHandler(std::function<void(void)>(
+      []() { std::cout << "Hello world\n"; }));  // do nothing by default
 }
 
 Button::Button(W& window, sf::Vector2f pos, sf::Vector2f size,
-               const sf::Texture* t,Z_IND_T z_index)
-    : Button{window,z_index} {
+               const sf::Texture* t, Z_IND_T z_index)
+    : Button{window, z_index} {
   // create rectangle
   auto rect = new sf::RectangleShape{size};
   // set posotion
@@ -119,8 +127,8 @@ void Button::onClick(sf::Event const& e) {
 
 // TEXT LINE
 TextLine::TextLine(W& window, sf::Vector2f pos, const char* txt, sf::Font& f,
-                   sf::Color c,Z_IND_T z_index)
-    : widget{window,z_index}, text_{txt} {
+                   sf::Color c, Z_IND_T z_index)
+    : widget{window, z_index}, text_{txt} {
   auto textArea = new sf::Text(text_, f);
 
   textArea->setPosition(pos);

@@ -99,6 +99,8 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
 
     sf::Vector2f ch_name_pos{0,1200};//temporary
     addWidget(std::make_unique<TextLine>(w_,ch_name_pos,c_name.c_str(),f,sf::Color::Red));
+
+    //create character portrait
   }
   
 

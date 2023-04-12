@@ -95,7 +95,8 @@ class Image : public widget {
 
  public:
   Image(W&, Z_IND_T);
-  Image(W&, const sf::Texture*);
+  Image(W&, const sf::Texture*,Z_IND_T z_index=0);
+  Image(W&, const sf::Texture*,sf::Vector2f pos, sf::Vector2f size,Z_IND_T z_index=0);
 };
 class Box : public widget {
   typedef sf::Shape* G_TYPE_PTR;
