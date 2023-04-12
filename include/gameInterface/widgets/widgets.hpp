@@ -37,13 +37,9 @@ class widget {
   typedef sf::Drawable G_OBJ;
   typedef std::unique_ptr<G_OBJ>
       G_OBJ_PTR;  // define alias for the underlying graphic object
-  typedef short Z_IND_T;
 
- private:
-  G_OBJ_PTR graphicObject_;
-  W& w_;
-  Z_IND_T z_index_{};
  protected:
+  typedef short Z_IND_T;
   Textures::ID t_id_;
 
   virtual G_OBJ* getGraphic() const;
@@ -56,8 +52,13 @@ class widget {
   // event handler
   std::function<void(void)> clickHandler;
 
+   private:
+  G_OBJ_PTR graphicObject_;
+  W& w_;
+  Z_IND_T z_index_{};
+
  public:
-  widget(W&);
+  widget(W&,Z_IND_T zindex=0);
   virtual ~widget() = 0;
   // graphic
   void draw() const;
@@ -93,7 +94,7 @@ class Image : public widget {
   G_OBJ* getGraphic() const override;
 
  public:
-  Image(W&);
+  Image(W&, Z_IND_T);
   Image(W&, const sf::Texture*);
 };
 class Box : public widget {
@@ -103,7 +104,7 @@ class Box : public widget {
   G_TYPE_PTR getGraphic() const override;
 
  public:
-  Box(W&);
+  Box(W&,Z_IND_T z_index=0);
 
   // graphic maipulation
   sf::Shape* getGraphicElement();
@@ -114,8 +115,8 @@ class Box : public widget {
 class Button : public Box {
  protected:
  public:
-  Button(W&);
-  Button(W& window, sf::Vector2f pos, sf::Vector2f size, const sf::Texture* t);
+  Button(W&,Z_IND_T);
+  Button(W& window, sf::Vector2f pos, sf::Vector2f size, const sf::Texture* t,Z_IND_T z_index=0);
 
   // events
   virtual void onClick(sf::Event const&) override;
@@ -136,7 +137,7 @@ class TextLine : public widget {
 
  public:
   TextLine(W& window, sf::Vector2f pos, const char* txt, sf::Font& f,
-           sf::Color c = sf::Color::Black);
+           sf::Color c = sf::Color::Black, Z_IND_T z_index=0);
 
   void setText(std::string& txt);
   std::string const& getText() const;

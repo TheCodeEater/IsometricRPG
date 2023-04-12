@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <type_traits>
 
 namespace IsoRPG {
 // CLASSE WINDOW DISPLAY BASE
@@ -92,8 +93,12 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
       "Play", f, sf::Color::Yellow));
 
   {//create character name widget
+    std::ifstream settings("settings.txt");
+    std::string c_name{};
+    settings>>c_name;
+
     sf::Vector2f ch_name_pos{0,1200};//temporary
-    addWidget(std::make_unique<TextLine>(w_,ch_name_pos,"Mordus",f,sf::Color::Red));
+    addWidget(std::make_unique<TextLine>(w_,ch_name_pos,c_name.c_str(),f,sf::Color::Red));
   }
   
 

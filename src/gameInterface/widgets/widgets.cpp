@@ -7,7 +7,7 @@
 
 namespace IsoRPG {
 // CLASS WIDGET
-widget::widget(W& window) : w_{window} {}
+widget::widget(W& window,Z_IND_T zindex) : w_{window}, z_index_{zindex} {}
 widget::~widget() = default;
 
 // events
@@ -44,7 +44,7 @@ void widget::setZInd(Z_IND_T value){
 
 // CLASSE IMAGE
 
-Image::Image(W& window) : widget(window) {  // creates empty image - for testing
+Image::Image(W& window, Z_IND_T z_index=0) : widget(window,z_index) {  // creates empty image - for testing
   setGraphic(new sf::RectangleShape{});
 }
 
@@ -60,7 +60,7 @@ Image::G_TYPE_PTR Image::getGraphic() const {
 }
 
 // BOX
-Box::Box(W& window) : widget(window) {}
+Box::Box(W& window, Z_IND_T z_index) : widget(window,z_index) {}
 
 Box::G_TYPE_PTR Box::getGraphic() const {
 #ifndef CAST_DEBUG
@@ -88,13 +88,13 @@ void Box::setTexture(const sf::Texture* t,
 }
 
 // BUTTON
-Button::Button(W& window) : Box(window) {
+Button::Button(W& window,Z_IND_T z_index) : Box(window, z_index) {
   setClickHandler(std::function<void(void)>([]() {std::cout<<"Hello world\n";}));  // do nothing by default
 }
 
 Button::Button(W& window, sf::Vector2f pos, sf::Vector2f size,
-               const sf::Texture* t)
-    : Button{window} {
+               const sf::Texture* t,Z_IND_T z_index)
+    : Button{window,z_index} {
   // create rectangle
   auto rect = new sf::RectangleShape{size};
   // set posotion
@@ -119,8 +119,8 @@ void Button::onClick(sf::Event const& e) {
 
 // TEXT LINE
 TextLine::TextLine(W& window, sf::Vector2f pos, const char* txt, sf::Font& f,
-                   sf::Color c)
-    : widget{window}, text_{txt} {
+                   sf::Color c,Z_IND_T z_index)
+    : widget{window,z_index}, text_{txt} {
   auto textArea = new sf::Text(text_, f);
 
   textArea->setPosition(pos);
