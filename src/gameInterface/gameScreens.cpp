@@ -91,6 +91,12 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
                    500 + 0.5 * (100 - 30)},
       "Play", f, sf::Color::Yellow));
 
+  {//create character name widget
+    sf::Vector2f ch_name_pos{0,1200};//temporary
+    addWidget(std::make_unique<TextLine>(w_,ch_name_pos,"Mordus",f,sf::Color::Red));
+  }
+  
+
   // sort widgets by z index
   updateWidgets();
 }
