@@ -11,7 +11,7 @@
 
 namespace IsoRPG {
 namespace Textures {
-enum class ID { mainButtonBackground = 0, mainMenuBackground = 1 };
+enum class ID { mainButtonBackground = 0, mainMenuBackground = 1, characterPortrait=2 };
 }
 
 class resourcesLoader {

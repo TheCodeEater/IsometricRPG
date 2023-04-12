@@ -69,6 +69,8 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
                          "main_menu_background.jpg");
     textureManager_.load(Textures::ID::mainButtonBackground,
                          "button_background.png");
+    textureManager_.load(Textures::ID::characterPortrait,
+                         "character_portrait.jpg");
     if (!f.loadFromFile("resources/fonts/gun4f.ttf")) {
       throw std::runtime_error("Couldn't load font!");
     }
@@ -79,7 +81,7 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
 
   // set background image
   addWidget(std::make_unique<Image>(
-      w_, textureManager_.get(Textures::ID::mainMenuBackground)));
+      w_, textureManager_.get(Textures::ID::mainMenuBackground), -1));
 
   // populate the main menu with objects
   addWidget(std::make_unique<Button>(
@@ -92,17 +94,20 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
                    500 + 0.5 * (100 - 30)},
       "Play", f, sf::Color::Yellow));
 
-  {//create character name widget
+  {  // create character name widget
     std::ifstream settings("settings.txt");
     std::string c_name{};
-    settings>>c_name;
+    settings >> c_name;
 
-    sf::Vector2f ch_name_pos{0,1200};//temporary
-    addWidget(std::make_unique<TextLine>(w_,ch_name_pos,c_name.c_str(),f,sf::Color::Red));
+    sf::Vector2f ch_name_pos{0, 1200};  // temporary
+    addWidget(std::make_unique<TextLine>(w_, ch_name_pos, c_name.c_str(), f,
+                                         sf::Color::Red));
 
-    //create character portrait
+    // create character portrait
+    addWidget(std::make_unique<Image>(
+        w_, textureManager_.get(Textures::ID::characterPortrait),
+        sf::Vector2f{800, 800}, sf::Vector2f{400, 400}));
   }
-  
 
   // sort widgets by z index
   updateWidgets();
