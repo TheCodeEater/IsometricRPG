@@ -1,4 +1,5 @@
 #include "../../include/gameInterface/gameScreens.hpp"
+#include "../../include/gameInterface/gameInterface.hpp"
 
 #include <algorithm>
 #include <fstream>
@@ -93,6 +94,18 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
       sf::Vector2f{(2200 - 300) / 2 + 0.5 * (300 - 4 * 30),
                    500 + 0.5 * (100 - 30)},
       "Play", f, sf::Color::Yellow));
+
+  {
+    auto textPlay=std::unique_ptr<TextLine>(new TextLine{w_,"Play",f,sf::Color::Yellow});
+    sf::Vector2f position{0,0};
+    sf::FloatRect bounds=textPlay->getLocalBounds();
+    position.x=(Game::width-bounds.width)/2;
+    position.y=20;
+    //better: add get width and height functions
+    //even better: add texted button with alignment options
+    textPlay->setPosition(position);
+    addWidget(std::move(textPlay));
+  }
 
   {  // create character name widget
     std::ifstream settings("settings.txt");

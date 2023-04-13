@@ -94,6 +94,10 @@ void Box::setTexture(const sf::Texture* t,
   getGraphic()->setTextureRect(t_bound);
 }
 
+void Box::setPosition(sf::Vector2f& pos){
+  getGraphic()->setPosition(pos);
+}
+
 // BUTTON
 Button::Button(W& window, Z_IND_T z_index) : Box(window, z_index) {
   setClickHandler(std::function<void(void)>(

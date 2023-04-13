@@ -91,6 +91,10 @@ class Box : public widget {
   sf::Shape* getGraphicElement();
 
   void setTexture(const sf::Texture*, sf::IntRect);
+
+  //position setting
+  void setPosition(sf::Vector2f&);
+
 };
 
 // CLASS IMAGE: represents an image that can be drawn inside a rectangle
