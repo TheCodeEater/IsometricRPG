@@ -124,7 +124,13 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
   }
 
   {//create dummy button
-  addWidget(std::make_unique<TextButton>(w_,"Text",f,textureManager_.get(Textures::ID::mainButtonBackground)));
+  auto b=std::make_unique<TextButton>(w_,"Text",f,textureManager_.get(Textures::ID::mainButtonBackground));
+  sf::Vector2f pos{};
+  pos.x=Game::width-(b->getGraphicElement()->getGlobalBounds().width);
+  pos.x/=2.;
+  pos.y=300;
+  b->setPosition(pos);
+  addWidget(std::move(b));
 
   }
 
