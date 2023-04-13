@@ -127,6 +127,7 @@ class Button : public Box {
  public:
   Button(W&,Z_IND_T);
   Button(W& window, sf::Vector2f pos, sf::Vector2f size, const sf::Texture* t,Z_IND_T z_index=0);
+  //Button(W& window, const sf::Texture* t, Z_IND_T z_index=0);
 
   // events
   virtual void onClick(sf::Event const&) override;

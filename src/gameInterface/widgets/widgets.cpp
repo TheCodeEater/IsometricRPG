@@ -102,19 +102,19 @@ void Box::setPosition(sf::Vector2f& pos){
 Button::Button(W& window, Z_IND_T z_index) : Box(window, z_index) {
   setClickHandler(std::function<void(void)>(
       []() { std::cout << "Hello world\n"; }));  // do nothing by default
+  //cree an empty rectangle
+  setGraphic(std::make_unique<sf::RectangleShape>());
 }
 
 Button::Button(W& window, sf::Vector2f pos, sf::Vector2f size,
                const sf::Texture* t, Z_IND_T z_index)
     : Button{window, z_index} {
-  // create rectangle
-  auto rect = new sf::RectangleShape{size};
   // set posotion
-  rect->setPosition(pos);
+  getGraphic()->setPosition(pos);
   // set texture
-  rect->setTexture(t);
-  // add rectangle to the graphic object
-  setGraphic(rect);
+  getGraphic()->setTexture(t);
+  //set size
+  getGraphic()->setSize(size);
 }
 
 //button graphic access
