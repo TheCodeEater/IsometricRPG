@@ -8,6 +8,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include "gameWorld/tilesets.hpp"
 
 namespace IsoRPG {
 namespace Textures {
@@ -30,6 +31,9 @@ class resourcesLoader {
   void loadFromPath(Textures::ID, std::string const&);
 
   const sf::Texture* get(Textures::ID);
+
+  //mapping tile enums to R2 vectors
+  //static std::map<Tiles::ID,sf::Vector2u> til
 };
 
 }  // namespace IsoRPG
