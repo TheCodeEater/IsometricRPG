@@ -167,7 +167,7 @@ class TextButton: public Button{
     std::unique_ptr<sf::Text> textObj_;
   public://place the button by default in (0,0). Size depends on text size
     TextButton(W&, Z_IND_T);
-    TextButton(W&, const char* txt, sf::Font& f, sf::Texture* t, sf::Color c=sf::Color::Black, Z_IND_T z_index=0);
+    TextButton(W&, const char* txt, sf::Font& f, sf::Texture const* t, sf::Color c=sf::Color::Black, Z_IND_T z_index=0);
 
     //drawing function
     void draw() const override;
