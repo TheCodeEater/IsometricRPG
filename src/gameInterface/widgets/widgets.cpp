@@ -135,6 +135,14 @@ TextLine::TextLine(W& window, sf::Vector2f pos, const char* txt, sf::Font& f,
   textArea->setFillColor(c);
   setGraphic(textArea);
 }
+TextLine::TextLine(W& window, const char* txt, sf::Font& f, sf::Color c, Z_IND_T z_index): 
+  TextLine{window,{0,0},txt,f,c,z_index}{
+
+}
+
+TextLine::TextLine(W& window, std::unique_ptr<sf::Text> textObj,Z_IND_T z_index): widget(window,z_index){
+  setGraphic(std::move(textObj));
+}
 
 // updating
 void TextLine::update() {
@@ -151,6 +159,14 @@ std::string const& TextLine::getText() const { return text_; }
 void TextLine::setText(std::string& txt) {
   text_ = txt;
   update();
+}
+
+void TextLine::setPosition(sf::Vector2f pos){
+  getGraphic()->setPosition(pos);
+}
+
+sf::FloatRect TextLine::getLocalBounds() const{
+  return getGraphic()->getLocalBounds();
 }
 
 }  // namespace IsoRPG

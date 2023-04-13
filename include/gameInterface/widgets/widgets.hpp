@@ -136,13 +136,24 @@ class TextLine : public widget {
 
   // for updating internal status based on data members
   void update() override;
-
  public:
   TextLine(W& window, sf::Vector2f pos, const char* txt, sf::Font& f,
            sf::Color c = sf::Color::Black, Z_IND_T z_index=0);
+  TextLine(W& window, const char* txt, sf::Font& f, sf::Color c= sf::Color::Black, Z_IND_T z_index=0);
+  TextLine(W& window, std::unique_ptr<sf::Text>,Z_IND_T z_index=0);
 
   void setText(std::string& txt);
   std::string const& getText() const;
+
+  void setPosition(sf::Vector2f);
+  
+  sf::FloatRect getLocalBounds() const;
+};
+
+class TextButton: public Button{
+
+  public://place the button by default in (0,0). Size depends on text size
+    TextButton(W&, const char* txt, sf::Font& f, sf::Color c=sf::Color::Black, Z_IND_T z_index=0);
 };
 
 }  // namespace IsoRPG
