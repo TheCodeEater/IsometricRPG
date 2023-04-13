@@ -124,7 +124,7 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
   }
 
   {//create dummy button
-  addWidget(std::make_unique<TextButton>(w_,"Text",f));
+  addWidget(std::make_unique<TextButton>(w_,"Text",f,textureManager_.get(Textures::ID::mainButtonBackground)));
 
   }
 
