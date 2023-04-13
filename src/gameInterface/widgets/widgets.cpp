@@ -31,6 +31,9 @@ void widget::setGraphic(G_OBJ* g) {
 
 void widget::setGraphic(G_OBJ_PTR&& g) { graphicObject_ = std::move(g); }
 
+W& widget::getWindow() const{ return w_;}
+
+
 void widget::draw() const { w_.draw(*graphicObject_); }
 
 widget::Z_IND_T widget::getZInd() const { return z_index_; }
@@ -180,16 +183,26 @@ sf::FloatRect TextLine::getLocalBounds() const{
 
 //textButton
 
-TextButton::TextButton(W& window,Z_IND_T z_index): Button{window,z_index} {}
+TextButton::TextButton(W& window,Z_IND_T z_index): Button{window,z_index} {
+  //create text object
+  textObj_=std::make_unique<sf::Text>();
+}
 
 TextButton::TextButton(W& window, const char* txt, sf::Font& f, sf::Color c, Z_IND_T z_index):TextButton{window,z_index}{
-  //create text object
-  std::unique_ptr<sf::Text> textObj_=std::make_unique<sf::Text>(txt,f);
+  textObj_->setString(txt);
+  textObj_->setFont(f);
   textObj_->setFillColor(c);
   //get bounding box
   auto bounds=textObj_->getLocalBounds();
   //set minimal button size
   getGraphic()->setSize({bounds.width,bounds.height});
   }
+
+void TextButton::draw() const{
+  // draw button
+  widget::draw();
+  //draw text
+  getWindow().draw(*textObj_);
+}
 
 }  // namespace IsoRPG

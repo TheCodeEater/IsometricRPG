@@ -46,6 +46,9 @@ class widget {
   void setGraphic(G_OBJ*);
   void setGraphic(G_OBJ_PTR&&);
 
+  //window interaction
+  W& getWindow() const;
+
   // interface for updating graphic object based on data members
   virtual void update();
 
@@ -61,7 +64,7 @@ class widget {
   widget(W&,Z_IND_T zindex=0);
   virtual ~widget() = 0;
   // graphic
-  void draw() const;
+  virtual void draw() const;
 
   //graphic positioning
   Z_IND_T getZInd() const;
@@ -165,6 +168,9 @@ class TextButton: public Button{
   public://place the button by default in (0,0). Size depends on text size
     TextButton(W&, Z_IND_T);
     TextButton(W&, const char* txt, sf::Font& f, sf::Color c=sf::Color::Black, Z_IND_T z_index=0);
+
+    //drawing function
+    void draw() const override;
 };
 
 }  // namespace IsoRPG
