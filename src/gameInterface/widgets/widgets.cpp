@@ -205,4 +205,9 @@ void TextButton::draw() const{
   getWindow().draw(*textObj_);
 }
 
+void TextButton::setPosition(sf::Vector2f& pos){
+  Box::setPosition(pos);
+  textObj_->setPosition(pos);
+} 
+
 }  // namespace IsoRPG

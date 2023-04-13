@@ -96,7 +96,7 @@ class Box : public widget {
   void setTexture(const sf::Texture*, sf::IntRect);
 
   //position setting
-  void setPosition(sf::Vector2f&);
+  virtual void setPosition(sf::Vector2f&);
 
 };
 
@@ -171,6 +171,9 @@ class TextButton: public Button{
 
     //drawing function
     void draw() const override;
+
+    //positioning
+    void setPosition(sf::Vector2f&) override;
 };
 
 }  // namespace IsoRPG
