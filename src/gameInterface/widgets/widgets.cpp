@@ -183,9 +183,7 @@ sf::FloatRect TextLine::getLocalBounds() const{
 
 //textButton
 
-TextButton::TextButton(W& window,Z_IND_T z_index): Button{window,z_index} {
-  //create text object
-  textObj_=std::make_unique<sf::Text>();
+TextButton::TextButton(W& window,Z_IND_T z_index): Button{window,z_index}, textObj_{new sf::Text()} {
 }
 
 TextButton::TextButton(W& window, const char* txt, sf::Font& f, sf::Color c, Z_IND_T z_index):TextButton{window,z_index}{
@@ -193,9 +191,10 @@ TextButton::TextButton(W& window, const char* txt, sf::Font& f, sf::Color c, Z_I
   textObj_->setFont(f);
   textObj_->setFillColor(c);
   //get bounding box
-  auto bounds=textObj_->getLocalBounds();
+  auto bounds=textObj_->getGlobalBounds();
   //set minimal button size
   getGraphic()->setSize({bounds.width,bounds.height});
+  getGraphic()->setPosition({bounds.left,bounds.top});
   }
 
 void TextButton::draw() const{
