@@ -153,12 +153,14 @@ class TextLine : public widget {
   
   sf::FloatRect getLocalBounds() const;
 };
-
+/*
 class TextButton: public Button{
-
+  private:
+    
   public://place the button by default in (0,0). Size depends on text size
+    TextButton(W&, Z_IND_T);
     TextButton(W&, const char* txt, sf::Font& f, sf::Color c=sf::Color::Black, Z_IND_T z_index=0);
-};
+};*/
 
 }  // namespace IsoRPG
 

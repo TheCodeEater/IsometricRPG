@@ -173,4 +173,20 @@ sf::FloatRect TextLine::getLocalBounds() const{
   return getGraphic()->getLocalBounds();
 }
 
+//textButton
+/*
+TextButton::TextButton(W& window,Z_IND_T z_index): Button{window,z_index} {}
+
+TextButton::TextButton(W& window, const char* txt, sf::Font& f, sf::Color c, Z_IND_T z_index):TextButton{window,z_index}{
+  //create text object
+  std::unique_ptr<sf::Text> textArea{new sf::Text};
+  textArea->setFont(f);
+  textArea->setColor(c);
+  textArea->setString(txt);
+  //get bounding box
+  auto bounds=textArea->getLocalBounds();
+  //set minimal button size
+  
+}*/
+
 }  // namespace IsoRPG
