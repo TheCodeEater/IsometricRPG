@@ -119,7 +119,11 @@ class Image : public Box {
 };
 
 class Button : public Box {
+  typedef sf::RectangleShape G_OBJ;
+  typedef G_OBJ* G_OBJ_PTR;
+
  protected:
+  G_OBJ_PTR getGraphic() const override;
  public:
   Button(W&,Z_IND_T);
   Button(W& window, sf::Vector2f pos, sf::Vector2f size, const sf::Texture* t,Z_IND_T z_index=0);
@@ -153,14 +157,14 @@ class TextLine : public widget {
   
   sf::FloatRect getLocalBounds() const;
 };
-/*
+
 class TextButton: public Button{
   private:
-    
+    std::unique_ptr<sf::Text> textObj_;
   public://place the button by default in (0,0). Size depends on text size
     TextButton(W&, Z_IND_T);
     TextButton(W&, const char* txt, sf::Font& f, sf::Color c=sf::Color::Black, Z_IND_T z_index=0);
-};*/
+};
 
 }  // namespace IsoRPG
 

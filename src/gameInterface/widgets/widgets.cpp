@@ -117,6 +117,11 @@ Button::Button(W& window, sf::Vector2f pos, sf::Vector2f size,
   setGraphic(rect);
 }
 
+//button graphic access
+Button::G_OBJ_PTR Button::getGraphic() const{
+  return static_cast<G_OBJ_PTR>(widget::getGraphic());
+}
+
 void Button::onClick(sf::Event const& e) {
   // check wether the left mouse button was clicked
   if (e.mouseButton.button == sf::Mouse::Left) {
@@ -174,19 +179,17 @@ sf::FloatRect TextLine::getLocalBounds() const{
 }
 
 //textButton
-/*
+
 TextButton::TextButton(W& window,Z_IND_T z_index): Button{window,z_index} {}
 
 TextButton::TextButton(W& window, const char* txt, sf::Font& f, sf::Color c, Z_IND_T z_index):TextButton{window,z_index}{
   //create text object
-  std::unique_ptr<sf::Text> textArea{new sf::Text};
-  textArea->setFont(f);
-  textArea->setColor(c);
-  textArea->setString(txt);
+  std::unique_ptr<sf::Text> textObj_=std::make_unique<sf::Text>(txt,f);
+  textObj_->setFillColor(c);
   //get bounding box
-  auto bounds=textArea->getLocalBounds();
+  auto bounds=textObj_->getLocalBounds();
   //set minimal button size
-  
-}*/
+  getGraphic()->setSize({bounds.width,bounds.height});
+  }
 
 }  // namespace IsoRPG
