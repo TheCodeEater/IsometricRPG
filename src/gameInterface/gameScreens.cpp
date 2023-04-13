@@ -96,7 +96,7 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
       "Play", f, sf::Color::Yellow));
 
   {
-    auto textPlay=std::unique_ptr<TextLine>(new TextLine{w_,"Play",f,sf::Color::Yellow});
+    auto textPlay=std::unique_ptr<TextLine>(new TextLine{w_,"Test",f,sf::Color::Yellow});
     sf::Vector2f position{0,0};
     sf::FloatRect bounds=textPlay->getLocalBounds();
     position.x=(Game::width-bounds.width)/2;
@@ -121,6 +121,11 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
     addWidget(std::make_unique<Image>(
         w_, textureManager_.get(Textures::ID::characterPortrait),
         sf::Vector2f{50, 50}, sf::Vector2f{200, 300}));
+  }
+
+  {//create dummy button
+  addWidget(std::make_unique<TextButton>(w_,"Text",f));
+
   }
 
   //create main title
