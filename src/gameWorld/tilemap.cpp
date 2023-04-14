@@ -1,7 +1,9 @@
 #include "../../include/gameWorld/tilemap.hpp"
 
 namespace IsoRPG {
-Tilemap::Tilemap(sf::Vector2u n_tiles,sf::Vector2u tileSize,sf::Texture const& texture)
+
+
+Tilemap::Tilemap(sf::Vector2u n_tiles,float tileSize,sf::Texture const& texture)
     : N_tiles_{n_tiles}, tileSize_{tileSize}, texture_{const_cast<sf::Texture&>(texture)} {
         //calculate array size
         unsigned size=N_tiles_.x*N_tiles_.y*4;
@@ -16,5 +18,60 @@ Tilemap::Tilemap(sf::Vector2u n_tiles,sf::Vector2u tileSize,sf::Texture const& t
         states.texture = &texture_;
         //actual draw
         target.draw(vertices_, states);
+    }
+
+    template<size_t x_, size_t y_>
+    void Tilemap::mapTiles(std::array<std::array<Tiles::ID,x_>,y_> map){//set texture to the various tiles
+        /*
+        //for each line
+        std::for_each(map.cbegin(),map.cend(),[&i,&j,this](std::array<Tiles::ID,y_> const& col){
+            //for each column
+            std::for_each(col.cbegin(),col.cend(),[&j,this](auto const& tile){
+                //set tile positions
+                //get a quad
+                //j sets the column offset, i*widh the row (remember: vertices are arranged in a line but we tret it as a 2d matrix)
+                //4: the array contains the 4 vertices of the quad, therefore for each quad there are 4 elements
+                //i* tiles per row
+                sf::Vertex* quad=vertices_[(j + i * x_) * 4];
+                //set position
+                {
+                sf::Vector2f topLeft{i*tileSize_,j*tileSize_};
+                quad[0].position=topLeft;
+                quad[1].position=topLeft+{tileSize_,0};
+                quad[2].position=topLeft+{tileSize_,tileSize_};
+                quad[3].position=topLeft+{0,tileSize_};
+                }
+                //set texture coordinates
+                {
+                    sf::Vector2f topLeft{}
+                }
+            });
+        });*/
+        int i{};
+        for(auto const& row: map){
+            int j{};
+            for(auto const& col: row){
+                //set tile positions
+                //get a quad
+                //j sets the column offset, i*widh the row (remember: vertices are arranged in a line but we tret it as a 2d matrix)
+                //x4: the array contains the 4 vertices of the quad, therefore for each quad there are 4 elements
+                //i* tiles per row
+                sf::Vertex* quad=&vertices_[(j + i * x_) * 4];
+                //set position
+                {
+                sf::Vector2f topLeft{i*tileSize_,j*tileSize_};
+                quad[0].position=topLeft;
+                quad[1].position=topLeft+sf::Vector2f{tileSize_,0};
+                quad[2].position=topLeft+sf::Vector2f{tileSize_,tileSize_};
+                quad[3].position=topLeft+sf::Vector2f{0,tileSize_};
+                }
+                //set texture coordinates
+                {
+                    sf::Vector2f topLeft{};
+                }
+                ++j;
+            }
+            ++i;
+        }
     }
 }  // namespace IsoRPG
