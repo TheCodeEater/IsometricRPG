@@ -22,7 +22,7 @@ string(APPEND CMAKE_EXE_LINKER_FLAGS_DEBUG " -fsanitize=address,undefined -fno-o
 set(CODE )
 
 #set files to be compiled
-add_executable(game.bin src/main.cpp src/gameInterface/gameInterface.cpp src/gameInterface/gameScreens.cpp src/gameInterface/widgets/widgets.cpp src/resourceLoader.cpp)
+add_executable(game.bin src/main.cpp src/gameInterface/gameInterface.cpp src/gameInterface/gameScreens.cpp src/gameInterface/widgets/widgets.cpp src/resourceLoader.cpp src/gameWorld/tilemap.cpp)
 
 #set dependencies
 find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
