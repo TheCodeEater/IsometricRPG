@@ -49,7 +49,7 @@ void Menu::display() const {
 }
 
 void Menu::updateWidgets() {
-  widgets_.sort(
+  std::sort(widgets_.begin(),widgets_.end(),
       [](std::unique_ptr<widget> const& a, std::unique_ptr<widget> const& b) {
         // sort in ascending order by z index
         return a->getZInd() < b->getZInd();

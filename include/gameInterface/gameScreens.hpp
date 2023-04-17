@@ -62,7 +62,7 @@ class windowDisplayBase {
 //  1 - Oggetti del menu (elements_): to be set up by constructor
 
 class Menu : public windowDisplayBase {
-  typedef std::list<std::unique_ptr<widget>> WIDGET_CONTAINER ;
+  typedef std::vector<std::unique_ptr<widget>> WIDGET_CONTAINER ;
 
    WIDGET_CONTAINER widgets_;
  protected:
