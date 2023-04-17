@@ -64,6 +64,8 @@ std::vector<std::unique_ptr<genericObject>>& Menu::getObjects() {
 
 // CLASS MAINMENU
 MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
+  //reserve some space
+  getWidgets().reserve(nReserve);
   // load textures
   try {
     textureManager_.load(Textures::ID::mainMenuBackground,

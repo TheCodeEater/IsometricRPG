@@ -86,6 +86,8 @@ class Menu : public windowDisplayBase {
   // member access
   WIDGET_CONTAINER& getWidgets();
   std::vector<std::unique_ptr<genericObject>>& getObjects();
+
+  static const size_t nReserve{8};
 };
 
 class MainMenu : public Menu {
