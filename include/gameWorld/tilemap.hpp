@@ -50,7 +50,11 @@ enum class phase{
 };
 
 struct Matrix::Tile{//struct to represent a tile
+  bool occupied_{};//is occupied
+  bool walkable_{};//can be walked on
+  phase p{phase::Solid};//state of matter
 
+  void* object{nullptr}; //temporary, to be replaced by weak_ptr
 };
 
 class Tilemap : public sf::Drawable,
