@@ -27,6 +27,32 @@ class mapTile{//class to associate tilemap id to texture coordinates
         sf::FloatRect operator() (Tiles::ID);
 };
 
+class Matrix{//class to represent the game world
+  struct Tile; // the generic world tile struct
+
+  int cols_{};//geometric structure
+  int rows_{};
+  std::vector<Tile> tiles_;//vector of tile data
+  
+  //tilemap
+
+  public:
+    Matrix()=default;
+    Matrix(int n_rows, int n_cols);//constructor
+
+    Tile const& at(int row, int col) const;//tile access read only
+
+    Tile& operator() (int row, int col);//tile access modifying
+};
+
+enum class phase{
+  Solid, Liquid, Gas, Steam, Plasma
+};
+
+struct Matrix::Tile{//struct to represent a tile
+
+};
+
 class Tilemap : public sf::Drawable,
                 public sf::Transformable {
  private:

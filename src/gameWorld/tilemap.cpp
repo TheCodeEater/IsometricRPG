@@ -2,6 +2,21 @@
 
 namespace IsoRPG {
 
+Matrix::Matrix(int n_rows, int n_cols): cols_{n_cols}, rows_{n_rows}{
+    //set vector size
+    tiles_.reserve(cols_*rows_);
+}
+
+Matrix::Tile const& Matrix::at(int row, int col) const{
+    assert(tiles_.max_size()==cols_*rows_); //test wether the size is correct
+    return tiles_.at(row*cols_+col); 
+}
+
+Matrix::Tile& Matrix::operator()(int row, int col){
+    assert(tiles_.max_size()==cols_*rows_); //test wether the size is correct
+    return tiles_.at(row*cols_+col); //offset by row* elements in row (ie cols) to the 1st element of the right row, then apply comun offset
+}
+
 
 Tilemap::Tilemap(sf::Vector2u n_tiles,float tileSize,sf::Texture const& texture)
     : N_tiles_{n_tiles}, tileSize_{tileSize}, texture_{const_cast<sf::Texture&>(texture)} {
