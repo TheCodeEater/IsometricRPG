@@ -9,7 +9,14 @@ namespace IsoRPG {
 //class BaseWidget
 
 //constructor
-BaseWidget::BaseWidget(W& window): w_{window}{}
+BaseWidget::BaseWidget(W& window, short z_index): w_{WindowWrapper{window}}, zIndex_{z_index}{}
+
+//nested class for window wrapping
+BaseWidget::WindowWrapper::WindowWrapper(W& window): w_{window}{}
+
+void BaseWidget::WindowWrapper::draw(const sf::Drawable& drawable) const{
+  w_.draw(drawable);
+}
 
 //event dispatcher
 void BaseWidget::onEvent(sf::Event const& e){
@@ -24,7 +31,6 @@ void BaseWidget::onEvent(sf::Event const& e){
         case sf::Event::MouseMoved:
           onMouseMove(e);
           break;
-          break;
       }
 }
 
@@ -35,11 +41,16 @@ void BaseWidget::onKeyPressed(sf::Event const& e){}
 
 //z-indexing
 void BaseWidget::setZIndex(short val){
-  z_index=val;
+  zIndex_=val;
 }
 
 short BaseWidget::getZIndex() const{
-  return z_index;
+  return zIndex_;
+}
+
+//window access
+BaseWidget::WindowWrapper const& BaseWidget::getWindow() const{
+  return w_;
 }
 
 
