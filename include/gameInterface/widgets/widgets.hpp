@@ -36,11 +36,18 @@ namespace IsoRPG {
 
 //base widget class
 class BaseWidget{
+  //struct for safe SFML window access
+  class WindowWrapper{
+    W& w_;
+    public:
+      explicit WindowWrapper(W& window);
+      void draw(const sf::Drawable& drawable) const;
+  };
   //Z index: determines order of drawing and overlapping
-  short z_index{};
+  short zIndex_{};
 
   //SFML window
-  W& w_;
+  WindowWrapper w_;
 
   protected:
     //specific event handlers - default empty
@@ -48,8 +55,11 @@ class BaseWidget{
     virtual void onMouseMove(sf::Event const&);
     virtual void onKeyPressed(sf::Event const&);
 
+    //window access
+    BaseWidget::WindowWrapper const& getWindow() const;
+
   public:
-    BaseWidget(W& window);
+    BaseWidget(W& window, short z_index=0);
 
     //special functions
     virtual ~BaseWidget()=default;
