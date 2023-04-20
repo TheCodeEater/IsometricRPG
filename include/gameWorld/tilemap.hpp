@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "tilesets.hpp"
+#include <memory>
+#include "gameObjects.hpp"
 
 using W = sf::RenderWindow;
 
@@ -54,7 +56,7 @@ struct Matrix::Tile{//struct to represent a tile
   bool walkable_{};//can be walked on
   phase p{phase::Solid};//state of matter
 
-  void* object{nullptr}; //temporary, to be replaced by weak_ptr
+  std::weak_ptr<basicGameObject> object_; //pointer to the object (if any. if no object are there, it is nullptr)
 };
 
 class Tilemap : public sf::Drawable,
@@ -68,8 +70,8 @@ class Tilemap : public sf::Drawable,
  public:
   Tilemap(sf::Vector2u n_tiles,float tileSize,sf::Texture const& texture);
 
-  template<size_t x_, size_t y_>
-    void Tilemap::mapTiles(std::array<std::array<Tiles::ID,x_>,y_> map);
+  //template<size_t x_, size_t y_>
+    //void Tilemap::mapTiles(std::array<std::array<Tiles::ID,x_>,y_> map);
 
   private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
