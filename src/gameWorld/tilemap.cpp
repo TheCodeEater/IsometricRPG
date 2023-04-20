@@ -35,7 +35,7 @@ Tilemap::Tilemap(sf::Vector2u n_tiles,float tileSize,sf::Texture const& texture)
         target.draw(vertices_, states);
     }
 
-    template<size_t x_, size_t y_>
+    /*template<size_t x_, size_t y_>
     void Tilemap::mapTiles(std::array<std::array<Tiles::ID,x_>,y_> map){//set texture to the various tiles
         
         int i{};
@@ -64,5 +64,5 @@ Tilemap::Tilemap(sf::Vector2u n_tiles,float tileSize,sf::Texture const& texture)
             }
             ++i;
         }
-    }
+    }*/
 }  // namespace IsoRPG
