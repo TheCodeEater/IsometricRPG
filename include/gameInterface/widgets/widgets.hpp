@@ -95,7 +95,14 @@ class Widget: public BaseWidget{
     //underlying sfml graphic object
     graphic_object graphicObject_
   public:
+    Widget(W& window, short z_index=0); //default constructor.
+    Widget(W& window, std::function<void(graphic_object&)> processFunc, short z_index=0); //perform computation on the graphicObject
+    //drawing
+    void draw() const final;
 
+    //transforming - shall not be overridden in subclasses
+    void setPosition(const sf::Vector2f pos) final;
+    sf::Vector2f getPosition() const final;
 };
 
 class widget {
