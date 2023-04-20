@@ -34,12 +34,13 @@ namespace IsoRPG {
 // getClickHandler: return a const reference to the handler
 //
 
+//base widget class
 class BaseWidget{
-  //Z index
+  //Z index: determines order of drawing and overlapping
   short z_index{};
 
   protected:
-    //specific event handlers
+    //specific event handlers - default empty
     virtual void onClick(sf::Event const&);
     virtual void onMouseMove(sf::Event const&);
     virtual void onKeyPressed(sf::Event const&);
@@ -57,7 +58,7 @@ class BaseWidget{
     //draw function, specific to each widget
     virtual void draw() const=0;
 
-    //transforming functions
+    //geometric transforming functions
     virtual void setPosition(const sf::Vector2f pos)=0;
     virtual sf::Vector2f getPosition() const=0;
 
@@ -67,6 +68,20 @@ class BaseWidget{
 
     //event handling function; called to receive an event
     virtual void onEvent(sf::Event const&);
+
+};
+
+//class to implement single-SFML object based widgets
+//template as several types of SFML objects may be drawn
+template<class graphic_object>
+class Widget: public BaseWidget{
+  //test wether is an SFML object - to be implemented
+  using graphic_object_ptr=std::unique_ptr<graphic_object>;
+
+  private:
+    //underlying sfml graphic object
+    graphic_object graphicObject_
+  public:
 
 };
 
