@@ -6,6 +6,41 @@
 #include "../../../include/gameInterface/gameInterface.hpp"
 
 namespace IsoRPG {
+//class BaseWidget
+
+//event dispatcher
+void BaseWidget::onEvent(sf::Event const& e){
+    //swith between the possible event types
+      switch (e.type) {
+        case sf::Event::MouseButtonReleased:
+          onClick(e);
+          break;
+        case sf::Event::KeyPressed:
+          onKeyPressed(e);
+          break;
+        case sf::Event::MouseMoved:
+          onMouseMove(e);
+          break;
+          break;
+      }
+}
+
+//event handlers
+void BaseWidget::onClick(sf::Event const& e){}
+void BaseWidget::onMouseMove(sf::Event const& e){}
+void BaseWidget::onKeyPressed(sf::Event const& e){}
+
+//z-indexing
+void BaseWidget::setZIndex(short val){
+  z_index=val;
+}
+
+short BaseWidget::getZIndex() const{
+  return z_index;
+}
+
+
+
 // CLASS WIDGET
 widget::widget(W& window, Z_IND_T zindex) : w_{window}, z_index_{zindex} {}
 widget::~widget() = default;
