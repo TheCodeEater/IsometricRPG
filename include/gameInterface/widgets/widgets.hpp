@@ -35,15 +35,38 @@ namespace IsoRPG {
 //
 
 class BaseWidget{
+  //Z index
+  short z_index{};
+
+  protected:
+    //specific event handlers
+    virtual void onClick(sf::Event const&);
+    virtual void onMouseMove(sf::Event const&);
+    virtual void onKeyPressed(sf::Event const&);
 
   public:
     BaseWidget()=default;
 
+    //special functions
     virtual ~BaseWidget()=default;
     BaseWidget& operator=(BaseWidget const&)=delete;
     BaseWidget& operator=(BaseWidget&&)=delete;
     BaseWidget(BaseWidget const&)=delete;
     BaseWidget(BaseWidget&&)=delete;
+
+    //draw function, specific to each widget
+    virtual void draw() const=0;
+
+    //transforming functions
+    virtual void setPosition(const sf::Vector2f pos)=0;
+    virtual sf::Vector2f getPosition() const=0;
+
+    //z index function
+    void setZIndex(short);
+    short getZIndex() const;
+
+    //event handling function; called to receive an event
+    virtual void onEvent(sf::Event const&);
 
 };
 
