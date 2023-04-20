@@ -39,6 +39,9 @@ class BaseWidget{
   //Z index: determines order of drawing and overlapping
   short z_index{};
 
+  //SFML window
+  W& w_;
+
   protected:
     //specific event handlers - default empty
     virtual void onClick(sf::Event const&);
@@ -46,7 +49,7 @@ class BaseWidget{
     virtual void onKeyPressed(sf::Event const&);
 
   public:
-    BaseWidget()=default;
+    BaseWidget(W& window);
 
     //special functions
     virtual ~BaseWidget()=default;
