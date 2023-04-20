@@ -53,6 +53,36 @@ BaseWidget::WindowWrapper const& BaseWidget::getWindow() const{
   return w_;
 }
 
+//base widget
+//constructor default
+template<class graphic_object>
+Widget<graphic_object>::Widget(W& window, short z_index): BaseWidget{window,z_index}{}
+
+//construct from pre existing sfml object
+template<class graphic_object>
+Widget<graphic_object>::Widget(W& window, std::function<void(graphic_object&)> processFunc, short z_index): Widget{window,z_index}{
+  //apply the function to the object. 
+  processFunc(graphic_object);
+}
+
+template<class graphic_object>
+void Widget<graphic_object>::draw() const{
+  //draw underlying graphic object 
+  getWindow().draw(*graphicObject_);
+}
+
+template<class graphic_object>
+void Widget<graphic_object>::setPosition(sf::Vector2f pos){
+  //call underlying sfml set position
+  graphicObject_->setPosition(pos);
+}
+
+template<class graphic_object>
+sf::Vector2f Widget<graphic_object>::getPosition() const{
+  //call sfml get position
+  return graphicObject_->getPosition();
+}
+
 
 
 // CLASS WIDGET
