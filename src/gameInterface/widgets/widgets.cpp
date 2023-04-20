@@ -8,6 +8,9 @@
 namespace IsoRPG {
 //class BaseWidget
 
+//constructor
+BaseWidget::BaseWidget(W& window): w_{window}{}
+
 //event dispatcher
 void BaseWidget::onEvent(sf::Event const& e){
     //swith between the possible event types
