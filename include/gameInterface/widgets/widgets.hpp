@@ -33,6 +33,20 @@ namespace IsoRPG {
 //
 // getClickHandler: return a const reference to the handler
 //
+
+class BaseWidget{
+
+  public:
+    BaseWidget()=default;
+
+    virtual ~BaseWidget()=default;
+    BaseWidget& operator=(BaseWidget const&)=delete;
+    BaseWidget& operator=(BaseWidget&&)=delete;
+    BaseWidget(BaseWidget const&)=delete;
+    BaseWidget(BaseWidget&&)=delete;
+
+};
+
 class widget {
   typedef sf::Drawable G_OBJ;
   typedef std::unique_ptr<G_OBJ>
