@@ -138,7 +138,7 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
   */
 
   //create background image
-  addWidget(std::make_unique<Widget<sf::Sprite>>(w_,[this](){
+  addWidget(std::make_unique<Widget<sf::RectangleShape>>(w_,[this](){
     //create shape to represent background image
     sf::RectangleShape s{sf::Vector2f{Game::width,Game::height}};
     //set position
