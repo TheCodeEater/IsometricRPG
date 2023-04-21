@@ -74,6 +74,10 @@ class Menu : public windowDisplayBase {
   void addWidget(std::unique_ptr<BaseWidget>&&);
   void updateWidgets();
 
+  // member access
+  WIDGET_CONTAINER& getWidgets();
+  std::vector<std::unique_ptr<genericObject>>& getObjects();
+
  public:
   explicit Menu(W& window);
 
@@ -82,10 +86,6 @@ class Menu : public windowDisplayBase {
 
   // graphics
   virtual void display() const override;
-
-  // member access
-  WIDGET_CONTAINER& getWidgets();
-  std::vector<std::unique_ptr<genericObject>>& getObjects();
 
   static const size_t nReserve{8};
 };
