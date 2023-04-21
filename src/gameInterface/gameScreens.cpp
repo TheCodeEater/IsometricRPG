@@ -136,8 +136,15 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
 
   }
   */
-  //create main title
 
+  //create background image
+  addWidget(std::make_unique<Widget<sf::Sprite>>(w_,[this](){
+    //create sprite to represent background image
+    sf::Sprite s{*textureManager_.get(Textures::ID::mainMenuBackground), sf::IntRect{0,0,Game::width,Game::height}};
+    return s;
+  },-1));
+
+  //create main title
   addWidget(std::make_unique<Widget<sf::Text>>(w_,[this](){
     //sf::Vector2f{300,50},"IsoRPG",f,sf::Color::Green
     sf::Text t{"IsoRPG",f};
