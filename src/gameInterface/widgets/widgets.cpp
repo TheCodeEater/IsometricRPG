@@ -6,84 +6,97 @@
 #include "../../../include/gameInterface/gameInterface.hpp"
 
 namespace IsoRPG {
-//class BaseWidget
+// class BaseWidget
 
-//constructor
-BaseWidget::BaseWidget(W& window, short z_index): w_{WindowWrapper{window}}, zIndex_{z_index}{}
+// constructor
+BaseWidget::BaseWidget(W& window, short z_index)
+    : w_{WindowWrapper{window}}, zIndex_{z_index} {}
 
-//nested class for window wrapping
-BaseWidget::WindowWrapper::WindowWrapper(W& window): w_{window}{}
+// nested class for window wrapping
+BaseWidget::WindowWrapper::WindowWrapper(W& window) : w_{window} {}
 
-void BaseWidget::WindowWrapper::draw(const sf::Drawable& drawable) const{
+void BaseWidget::WindowWrapper::draw(const sf::Drawable& drawable) const {
   w_.draw(drawable);
 }
 
-//event dispatcher
-void BaseWidget::onEvent(sf::Event const& e){
-    //swith between the possible event types
-      switch (e.type) {
-        case sf::Event::MouseButtonReleased:
-          onClick(e);
-          break;
-        case sf::Event::KeyPressed:
-          onKeyPressed(e);
-          break;
-        case sf::Event::MouseMoved:
-          onMouseMove(e);
-          break;
-      }
+// event dispatcher
+void BaseWidget::onEvent(sf::Event const& e) {
+  // swith between the possible event types
+  switch (e.type) {
+    case sf::Event::MouseButtonReleased:
+      onClick(e);
+      break;
+    case sf::Event::KeyPressed:
+      onKeyPressed(e);
+      break;
+    case sf::Event::MouseMoved:
+      onMouseMove(e);
+      break;
+  }
 }
 
-//event handlers
-void BaseWidget::onClick(sf::Event const& e){}
-void BaseWidget::onMouseMove(sf::Event const& e){}
-void BaseWidget::onKeyPressed(sf::Event const& e){}
+// event handlers
+void BaseWidget::onClick(sf::Event const& e) {}
+void BaseWidget::onMouseMove(sf::Event const& e) {}
+void BaseWidget::onKeyPressed(sf::Event const& e) {}
 
-//z-indexing
-void BaseWidget::setZIndex(short val){
-  zIndex_=val;
+// z-indexing
+void BaseWidget::setZIndex(short val) { zIndex_ = val; }
+
+short BaseWidget::getZIndex() const { return zIndex_; }
+
+// window access
+BaseWidget::WindowWrapper const& BaseWidget::getWindow() const { return w_; }
+
+// base widget
+// constructor default
+template <class graphic_object>
+Widget<graphic_object>::Widget(W& window, short z_index)
+    : BaseWidget{window, z_index} {}
+
+template <class graphic_object>
+Widget<graphic_object>::Widget(W& window, graphic_object&& graphic,
+                               short z_index = 0)
+    : Widget{window, z_index}, graphicObject_{std::move(graphic)} {}
+// construct from pre existing sfml object
+template <class graphic_object>
+Widget<graphic_object>::Widget(W& window,
+                               std::function<void(GraphicWrapper&)> processFunc,
+                               short z_index)
+    : Widget{window, z_index} {
+  // create wrapper
+  GraphicWrapper g_wrapper{graphicObject_};
+  // apply the function to the wrapper
+  processFunc(g_wrapper);
 }
 
-short BaseWidget::getZIndex() const{
-  return zIndex_;
+// wrapper class for graphic objects manipulation in lambdas
+template <class graphic_object>
+Widget<graphic_object>::GraphicWrapper::GraphicWrapper(graphic_object& g)
+    : gObj_{g} {}  // create reference to the object
+
+template <class graphic_object>
+void Widget<graphic_object>::GraphicWrapper::assign(graphic_object&& g) {
+  gObj_ = std::move(g);  // move create graphic object
 }
 
-//window access
-BaseWidget::WindowWrapper const& BaseWidget::getWindow() const{
-  return w_;
-}
-
-//base widget
-//constructor default
-template<class graphic_object>
-Widget<graphic_object>::Widget(W& window, short z_index): BaseWidget{window,z_index}{}
-
-//construct from pre existing sfml object
-template<class graphic_object>
-Widget<graphic_object>::Widget(W& window, std::function<void(graphic_object&)> processFunc, short z_index): Widget{window,z_index}{
-  //apply the function to the object. 
-  processFunc(graphic_object);
-}
-
-template<class graphic_object>
-void Widget<graphic_object>::draw() const{
-  //draw underlying graphic object 
+template <class graphic_object>
+void Widget<graphic_object>::draw() const {
+  // draw underlying graphic object
   getWindow().draw(*graphicObject_);
 }
 
-template<class graphic_object>
-void Widget<graphic_object>::setPosition(sf::Vector2f pos){
-  //call underlying sfml set position
+template <class graphic_object>
+void Widget<graphic_object>::setPosition(sf::Vector2f pos) {
+  // call underlying sfml set position
   graphicObject_->setPosition(pos);
 }
 
-template<class graphic_object>
-sf::Vector2f Widget<graphic_object>::getPosition() const{
-  //call sfml get position
+template <class graphic_object>
+sf::Vector2f Widget<graphic_object>::getPosition() const {
+  // call sfml get position
   return graphicObject_->getPosition();
 }
-
-
 
 // CLASS WIDGET
 widget::widget(W& window, Z_IND_T zindex) : w_{window}, z_index_{zindex} {}
@@ -110,8 +123,7 @@ void widget::setGraphic(G_OBJ* g) {
 
 void widget::setGraphic(G_OBJ_PTR&& g) { graphicObject_ = std::move(g); }
 
-W& widget::getWindow() const{ return w_;}
-
+W& widget::getWindow() const { return w_; }
 
 void widget::draw() const { w_.draw(*graphicObject_); }
 
@@ -176,15 +188,13 @@ void Box::setTexture(const sf::Texture* t,
   getGraphic()->setTextureRect(t_bound);
 }
 
-void Box::setPosition(sf::Vector2f& pos){
-  getGraphic()->setPosition(pos);
-}
+void Box::setPosition(sf::Vector2f& pos) { getGraphic()->setPosition(pos); }
 
 // BUTTON
 Button::Button(W& window, Z_IND_T z_index) : Box(window, z_index) {
   setClickHandler(std::function<void(void)>(
       []() { std::cout << "Hello world\n"; }));  // do nothing by default
-  //cree an empty rectangle
+  // cree an empty rectangle
   setGraphic(std::make_unique<sf::RectangleShape>());
 }
 
@@ -195,12 +205,12 @@ Button::Button(W& window, sf::Vector2f pos, sf::Vector2f size,
   getGraphic()->setPosition(pos);
   // set texture
   getGraphic()->setTexture(t);
-  //set size
+  // set size
   getGraphic()->setSize(size);
 }
 
-//button graphic access
-Button::G_OBJ_PTR Button::getGraphic() const{
+// button graphic access
+Button::G_OBJ_PTR Button::getGraphic() const {
   return static_cast<G_OBJ_PTR>(widget::getGraphic());
 }
 
@@ -226,12 +236,13 @@ TextLine::TextLine(W& window, sf::Vector2f pos, const char* txt, sf::Font& f,
   textArea->setFillColor(c);
   setGraphic(textArea);
 }
-TextLine::TextLine(W& window, const char* txt, sf::Font& f, sf::Color c, Z_IND_T z_index): 
-  TextLine{window,{0,0},txt,f,c,z_index}{
+TextLine::TextLine(W& window, const char* txt, sf::Font& f, sf::Color c,
+                   Z_IND_T z_index)
+    : TextLine{window, {0, 0}, txt, f, c, z_index} {}
 
-}
-
-TextLine::TextLine(W& window, std::unique_ptr<sf::Text> textObj,Z_IND_T z_index): widget(window,z_index){
+TextLine::TextLine(W& window, std::unique_ptr<sf::Text> textObj,
+                   Z_IND_T z_index)
+    : widget(window, z_index) {
   setGraphic(std::move(textObj));
 }
 
@@ -252,41 +263,41 @@ void TextLine::setText(std::string& txt) {
   update();
 }
 
-void TextLine::setPosition(sf::Vector2f pos){
-  getGraphic()->setPosition(pos);
-}
+void TextLine::setPosition(sf::Vector2f pos) { getGraphic()->setPosition(pos); }
 
-sf::FloatRect TextLine::getLocalBounds() const{
+sf::FloatRect TextLine::getLocalBounds() const {
   return getGraphic()->getLocalBounds();
 }
 
-//textButton
+// textButton
 
-TextButton::TextButton(W& window,Z_IND_T z_index): Button{window,z_index}, textObj_{new sf::Text()} {
-}
+TextButton::TextButton(W& window, Z_IND_T z_index)
+    : Button{window, z_index}, textObj_{new sf::Text()} {}
 
-TextButton::TextButton(W& window, const char* txt, sf::Font& f, sf::Texture const* t,sf::Color c, Z_IND_T z_index):TextButton{window,z_index}{
+TextButton::TextButton(W& window, const char* txt, sf::Font& f,
+                       sf::Texture const* t, sf::Color c, Z_IND_T z_index)
+    : TextButton{window, z_index} {
   textObj_->setString(txt);
   textObj_->setFont(f);
   textObj_->setFillColor(c);
-  //get bounding box
-  auto bounds=textObj_->getGlobalBounds();
-  //set minimal button size
-  getGraphic()->setSize({bounds.width,bounds.height});
-  getGraphic()->setPosition({bounds.left,bounds.top});
+  // get bounding box
+  auto bounds = textObj_->getGlobalBounds();
+  // set minimal button size
+  getGraphic()->setSize({bounds.width, bounds.height});
+  getGraphic()->setPosition({bounds.left, bounds.top});
   getGraphic()->setTexture(t);
-  }
+}
 
-void TextButton::draw() const{
+void TextButton::draw() const {
   // draw button
   widget::draw();
-  //draw text
+  // draw text
   getWindow().draw(*textObj_);
 }
 
-void TextButton::setPosition(sf::Vector2f& pos){
+void TextButton::setPosition(sf::Vector2f& pos) {
   Box::setPosition(pos);
   textObj_->setPosition(pos);
-} 
+}
 
 }  // namespace IsoRPG

@@ -29,80 +29,97 @@ namespace IsoRPG {
 //
 // setClickHandler: set a click handler. Accepts an rvalue reference to a
 // function object (forces the object to be move: you cannot assign the same
-//function object to more objects)
+// function object to more objects)
 //
 // getClickHandler: return a const reference to the handler
 //
 
-//base widget class
-class BaseWidget{
-  //struct for safe SFML window access
-  class WindowWrapper{
+// base widget class
+class BaseWidget {
+  // struct for safe SFML window access
+  class WindowWrapper {
     W& w_;
-    public:
-      explicit WindowWrapper(W& window);
-      void draw(const sf::Drawable& drawable) const;
+
+   public:
+    explicit WindowWrapper(W& window);
+    void draw(const sf::Drawable& drawable) const;
   };
-  //Z index: determines order of drawing and overlapping
+  // Z index: determines order of drawing and overlapping
   short zIndex_{};
 
-  //SFML window
+  // SFML window
   WindowWrapper w_;
 
-  protected:
-    //specific event handlers - default empty
-    virtual void onClick(sf::Event const&);
-    virtual void onMouseMove(sf::Event const&);
-    virtual void onKeyPressed(sf::Event const&);
+ protected:
+  // specific event handlers - default empty
+  virtual void onClick(sf::Event const&);
+  virtual void onMouseMove(sf::Event const&);
+  virtual void onKeyPressed(sf::Event const&);
 
-    //window access
-    BaseWidget::WindowWrapper const& getWindow() const;
+  // window access
+  BaseWidget::WindowWrapper const& getWindow() const;
 
-  public:
-    BaseWidget(W& window, short z_index=0);
+ public:
+  BaseWidget(W& window, short z_index = 0);
 
-    //special functions
-    virtual ~BaseWidget()=default;
-    BaseWidget& operator=(BaseWidget const&)=delete;
-    BaseWidget& operator=(BaseWidget&&)=delete;
-    BaseWidget(BaseWidget const&)=delete;
-    BaseWidget(BaseWidget&&)=delete;
+  // special functions
+  virtual ~BaseWidget() = default;
+  BaseWidget& operator=(BaseWidget const&) = delete;
+  BaseWidget& operator=(BaseWidget&&) = delete;
+  BaseWidget(BaseWidget const&) = delete;
+  BaseWidget(BaseWidget&&) = delete;
 
-    //draw function, specific to each widget
-    virtual void draw() const=0;
+  // draw function, specific to each widget
+  virtual void draw() const = 0;
 
-    //geometric transforming functions
-    virtual void setPosition(const sf::Vector2f pos)=0;
-    virtual sf::Vector2f getPosition() const=0;
+  // geometric transforming functions
+  virtual void setPosition(const sf::Vector2f pos) = 0;
+  virtual sf::Vector2f getPosition() const = 0;
 
-    //z index function
-    void setZIndex(short);
-    short getZIndex() const;
+  // z index function
+  void setZIndex(short);
+  short getZIndex() const;
 
-    //event handling function; called to receive an event
-    virtual void onEvent(sf::Event const&);
-
+  // event handling function; called to receive an event
+  virtual void onEvent(sf::Event const&);
 };
 
-//class to implement single-SFML object based widgets
-//template as several types of SFML objects may be drawn
-template<class graphic_object>
-class Widget: public BaseWidget{
-  //test wether is an SFML object - to be implemented
-  using graphic_object_ptr=std::unique_ptr<graphic_object>;
+// class to implement single-SFML object based widgets
+// template as several types of SFML objects may be drawn
+template <class graphic_object>
+class Widget : public BaseWidget {
+  // test wether is an SFML object - to be implemented
+  using graphic_object_ptr = std::unique_ptr<graphic_object>;
 
-  private:
-    //underlying sfml graphic object
-    graphic_object graphicObject_
-  public:
-    Widget(W& window, short z_index=0); //default constructor.
-    Widget(W& window, std::function<void(graphic_object&)> processFunc, short z_index=0); //perform computation on the graphicObject
-    //drawing
-    void draw() const final;
+ private:
+  // underlying sfml graphic object
+  graphic_object graphicObject_;
+public:
+  Widget(W& window, short z_index = 0);  // default constructor.
+  Widget(W& window, graphic_object&& graphic,
+         short z_index = 0);  // takes an object to be moved: the user will not
+                              // have the private object in its hands
+  // Widget(W& window, graphic_object graphic, short z_index=0);//pass by value.
+  // The user won't have the private object but causes copy overhead
+  Widget(W& window, std::function<void(GraphicWrapper&)> processFunc,
+         short z_index = 0);  // perform computation on the graphicObject
 
-    //transforming - shall not be overridden in subclasses
-    void setPosition(const sf::Vector2f pos) final;
-    sf::Vector2f getPosition() const final;
+  // drawing
+  void draw() const final;
+
+  // transforming - shall not be overridden in subclasses
+  void setPosition(const sf::Vector2f pos) final;
+  sf::Vector2f getPosition() const final;
+
+  // struct to safely manipulate graphic_object
+  // template<class graphic_object>
+  class GraphicWrapper {
+    graphic_object& gObj_;
+
+   public:
+    explicit GraphicWrapper(graphic_object& g);
+    void assign(graphic_object&& g);
+  };
 };
 
 class widget {
@@ -118,7 +135,7 @@ class widget {
   void setGraphic(G_OBJ*);
   void setGraphic(G_OBJ_PTR&&);
 
-  //window interaction
+  // window interaction
   W& getWindow() const;
 
   // interface for updating graphic object based on data members
@@ -127,18 +144,18 @@ class widget {
   // event handler
   std::function<void(void)> clickHandler;
 
-   private:
+ private:
   G_OBJ_PTR graphicObject_;
   W& w_;
   Z_IND_T z_index_{};
 
  public:
-  widget(W&,Z_IND_T zindex=0);
+  widget(W&, Z_IND_T zindex = 0);
   virtual ~widget() = 0;
   // graphic
   virtual void draw() const;
 
-  //graphic positioning
+  // graphic positioning
   Z_IND_T getZInd() const;
   void setZInd(Z_IND_T value);
 
@@ -160,16 +177,15 @@ class Box : public widget {
   G_TYPE_PTR getGraphic() const override;
 
  public:
-  Box(W&,Z_IND_T z_index=0);
+  Box(W&, Z_IND_T z_index = 0);
 
   // graphic maipulation
   sf::Shape* getGraphicElement();
 
   void setTexture(const sf::Texture*, sf::IntRect);
 
-  //position setting
+  // position setting
   virtual void setPosition(sf::Vector2f&);
-
 };
 
 // CLASS IMAGE: represents an image that can be drawn inside a rectangle
@@ -189,8 +205,9 @@ class Image : public Box {
 
  public:
   Image(W&, Z_IND_T);
-  Image(W&, const sf::Texture*,Z_IND_T z_index=0);
-  Image(W&, const sf::Texture*,sf::Vector2f pos, sf::Vector2f size,Z_IND_T z_index=0);
+  Image(W&, const sf::Texture*, Z_IND_T z_index = 0);
+  Image(W&, const sf::Texture*, sf::Vector2f pos, sf::Vector2f size,
+        Z_IND_T z_index = 0);
 };
 
 class Button : public Box {
@@ -199,10 +216,12 @@ class Button : public Box {
 
  protected:
   G_OBJ_PTR getGraphic() const override;
+
  public:
-  Button(W&,Z_IND_T);
-  Button(W& window, sf::Vector2f pos, sf::Vector2f size, const sf::Texture* t,Z_IND_T z_index=0);
-  //Button(W& window, const sf::Texture* t, Z_IND_T z_index=0);
+  Button(W&, Z_IND_T);
+  Button(W& window, sf::Vector2f pos, sf::Vector2f size, const sf::Texture* t,
+         Z_IND_T z_index = 0);
+  // Button(W& window, const sf::Texture* t, Z_IND_T z_index=0);
 
   // events
   virtual void onClick(sf::Event const&) override;
@@ -220,32 +239,36 @@ class TextLine : public widget {
 
   // for updating internal status based on data members
   void update() override;
+
  public:
   TextLine(W& window, sf::Vector2f pos, const char* txt, sf::Font& f,
-           sf::Color c = sf::Color::Black, Z_IND_T z_index=0);
-  TextLine(W& window, const char* txt, sf::Font& f, sf::Color c= sf::Color::Black, Z_IND_T z_index=0);
-  TextLine(W& window, std::unique_ptr<sf::Text>,Z_IND_T z_index=0);
+           sf::Color c = sf::Color::Black, Z_IND_T z_index = 0);
+  TextLine(W& window, const char* txt, sf::Font& f,
+           sf::Color c = sf::Color::Black, Z_IND_T z_index = 0);
+  TextLine(W& window, std::unique_ptr<sf::Text>, Z_IND_T z_index = 0);
 
   void setText(std::string& txt);
   std::string const& getText() const;
 
   void setPosition(sf::Vector2f);
-  
+
   sf::FloatRect getLocalBounds() const;
 };
 
-class TextButton: public Button{
-  private:
-    std::unique_ptr<sf::Text> textObj_;
-  public://place the button by default in (0,0). Size depends on text size
-    TextButton(W&, Z_IND_T);
-    TextButton(W&, const char* txt, sf::Font& f, sf::Texture const* t, sf::Color c=sf::Color::Black, Z_IND_T z_index=0);
+class TextButton : public Button {
+ private:
+  std::unique_ptr<sf::Text> textObj_;
 
-    //drawing function
-    void draw() const override;
+ public:  // place the button by default in (0,0). Size depends on text size
+  TextButton(W&, Z_IND_T);
+  TextButton(W&, const char* txt, sf::Font& f, sf::Texture const* t,
+             sf::Color c = sf::Color::Black, Z_IND_T z_index = 0);
 
-    //positioning
-    void setPosition(sf::Vector2f&) override;
+  // drawing function
+  void draw() const override;
+
+  // positioning
+  void setPosition(sf::Vector2f&) override;
 };
 
 }  // namespace IsoRPG
