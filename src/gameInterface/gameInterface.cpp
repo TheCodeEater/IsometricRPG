@@ -23,10 +23,9 @@ int Game::loop() {
         case sf::Event::Closed:
           w_.close();
           break;
-        case sf::Event::MouseButtonReleased:
-          currentWindow_->onClick(
-              e);  // TEMPORARY IMPLEMENTATION, TO REMOVE ASAP
         default:
+          currentWindow_->onEvent(
+              e);  
           break;
       }
     }
