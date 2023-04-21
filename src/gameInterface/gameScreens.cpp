@@ -74,6 +74,7 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
                          "button_background.png");
     textureManager_.load(Textures::ID::characterPortrait,
                          "character_portrait.jpg");
+    textureManager_.load(Textures::ID::playButton, "buttons.jpg");
     if (!f.loadFromFile("resources/fonts/gun4f.ttf")) {
       throw std::runtime_error("Couldn't load font!");
     }
@@ -155,6 +156,13 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
     t.setFillColor(sf::Color::Green);
     t.setPosition(sf::Vector2f{300,500});
     return t;
+  }));
+
+  //create play button
+  addWidget(std::make_unique<Widget<sf::Sprite>>(w_,[this](){
+    sf::Sprite s{*textureManager_.get(Textures::ID::playButton),{10,10,210,100}};
+
+    return s;
   }));
   
 
