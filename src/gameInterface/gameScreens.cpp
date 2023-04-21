@@ -139,8 +139,12 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
 
   //create background image
   addWidget(std::make_unique<Widget<sf::Sprite>>(w_,[this](){
-    //create sprite to represent background image
-    sf::Sprite s{*textureManager_.get(Textures::ID::mainMenuBackground), sf::IntRect{0,0,Game::width,Game::height}};
+    //create shape to represent background image
+    sf::RectangleShape s{sf::Vector2f{Game::width,Game::height}};
+    //set position
+    s.setPosition({0,0});
+    //set texture
+    s.setTexture(textureManager_.get(Textures::ID::mainMenuBackground));
     return s;
   },-1));
 
