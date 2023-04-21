@@ -19,19 +19,19 @@ Menu::Menu(W& window)
 // CLASS MENU
 //
 
-std::unique_ptr<widget> Menu::make_widget(std::string& data) {}
+std::unique_ptr<BaseWidget> Menu::make_widget(std::string& data) {}
 
-void Menu::addWidget(std::unique_ptr<widget>&& wid) {
+void Menu::addWidget(std::unique_ptr<BaseWidget>&& wid) {
   widgets_.insert(widgets_.end(), std::move(wid));
 }
 
-void Menu::onClick(sf::Event const& e) {
+void Menu::onEvent(sf::Event const& e) {
   // call the click handler on each object
   std::for_each(
-      widgets_.begin(), widgets_.end(), [e](std::unique_ptr<widget>& widget) {
-        // call the click handler on the widget
+      widgets_.begin(), widgets_.end(), [e](std::unique_ptr<BaseWidget>& widget) {
+        // call the function event dispatcher. Exception checking to be re written
         try {
-          widget->onClick(e);
+          widget->onEvent(e);
         } catch (std::bad_function_call& e) {
           std::cerr << e.what();
           std::cerr << "\nLikely the function object event handler isn't set "
@@ -45,14 +45,14 @@ void Menu::onClick(sf::Event const& e) {
 void Menu::display() const {
   // draw elements
   std::for_each(widgets_.begin(), widgets_.end(),
-                [](std::unique_ptr<widget> const& widget) { widget->draw(); });
+                [](std::unique_ptr<BaseWidget> const& widget) { widget->draw(); });
 }
 
 void Menu::updateWidgets() {
   std::sort(widgets_.begin(),widgets_.end(),
-      [](std::unique_ptr<widget> const& a, std::unique_ptr<widget> const& b) {
+      [](std::unique_ptr<BaseWidget> const& a, std::unique_ptr<BaseWidget> const& b) {
         // sort in ascending order by z index
-        return a->getZInd() < b->getZInd();
+        return a->getZIndex() < b->getZIndex();
       });
 }
 
@@ -81,7 +81,7 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
     std::cerr << e.what();
   }
   // load font
-
+  /*
   // set background image
   addWidget(std::make_unique<Image>(
       w_, textureManager_.get(Textures::ID::mainMenuBackground), -1));
@@ -138,7 +138,7 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
 
   //create main title
   addWidget(std::make_unique<TextLine>(w_,sf::Vector2f{300,50},"IsoRPG",f,sf::Color::Green));
-
+  */
   // sort widgets by z index
   updateWidgets();
 }
