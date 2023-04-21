@@ -50,8 +50,10 @@ class BaseWidget {
   // SFML window
   WindowWrapper w_;
 
+  //specific event handlers
+
  protected:
-  // specific event handlers - default empty
+  // specific event handlers - default empty. 
   virtual void onClick(sf::Event const&);
   virtual void onMouseMove(sf::Event const&);
   virtual void onKeyPressed(sf::Event const&);
@@ -89,7 +91,6 @@ class BaseWidget {
 template <class graphic_object>
 class Widget : public BaseWidget {
   // test wether is an SFML object - to be implemented
-  using graphic_object_ptr = std::unique_ptr<graphic_object>;
 
  private:
   // underlying sfml graphic object
@@ -123,7 +124,7 @@ public:
     explicit GraphicWrapper(graphic_object& g);
 
     ~GraphicWrapper()=default;
-    //disable copy and m
+    //disable copy and move
     GraphicWrapper(GraphicWrapper const&)=delete;
     GraphicWrapper(GraphicWrapper &&)=delete;
     GraphicWrapper& operator=(GraphicWrapper const&)=delete;
