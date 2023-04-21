@@ -121,6 +121,14 @@ public:
 
    public:
     explicit GraphicWrapper(graphic_object& g);
+
+    ~GraphicWrapper()=default;
+    //disable copy and m
+    GraphicWrapper(GraphicWrapper const&)=delete;
+    GraphicWrapper(GraphicWrapper &&)=delete;
+    GraphicWrapper& operator=(GraphicWrapper const&)=delete;
+    GraphicWrapper& operator=(GraphicWrapper &&)=delete;
+
     void assign(graphic_object&& g);
   };
 };
