@@ -103,6 +103,9 @@ public:
   // The user won't have the private object but causes copy overhead
   Widget(W& window, std::function<void(GraphicWrapper&)> processFunc,
          short z_index = 0);  // perform computation on the graphicObject
+  //accepts function that create the object and returns it by value
+  //the returned object is a different one (a copy) of the one processed inside the function
+  Widget(W& window, std::function<graphic_object(void)> processFunc, short z_index=0);
 
   // drawing
   void draw() const final;

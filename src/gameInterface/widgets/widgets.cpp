@@ -69,6 +69,12 @@ Widget<graphic_object>::Widget(W& window,
   // apply the function to the wrapper
   processFunc(g_wrapper);
 }
+//another lambda
+template <class graphic_object>
+Widget<graphic_object>::Widget(W& window, std::function<graphic_object(void)> processFunc, short z_index)
+  : Widget{window, z_index}{
+    graphicObject_=processFunc();
+  }
 
 // wrapper class for graphic objects manipulation in lambdas
 template <class graphic_object>
