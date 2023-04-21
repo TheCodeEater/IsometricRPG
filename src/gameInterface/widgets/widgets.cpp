@@ -52,7 +52,7 @@ BaseWidget::WindowWrapper const& BaseWidget::getWindow() const { return w_; }
 // constructor default
 template <class graphic_object>
 Widget<graphic_object>::Widget(W& window, short z_index)
-    : BaseWidget{window, z_index} {}
+    : BaseWidget{window, z_index}, graphicObject_{} {}
 
 template <class graphic_object>
 Widget<graphic_object>::Widget(W& window, graphic_object&& graphic,
