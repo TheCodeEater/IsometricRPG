@@ -133,7 +133,7 @@ public:
     void assign(graphic_object&& g);
   };
 };
-
+/*
 class widget {
   typedef sf::Drawable G_OBJ;
   typedef std::unique_ptr<G_OBJ>
@@ -281,7 +281,7 @@ class TextButton : public Button {
 
   // positioning
   void setPosition(sf::Vector2f&) override;
-};
+};*/
 
 }  // namespace IsoRPG
 

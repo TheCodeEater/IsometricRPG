@@ -103,7 +103,7 @@ sf::Vector2f Widget<graphic_object>::getPosition() const {
   // call sfml get position
   return graphicObject_->getPosition();
 }
-
+/*
 // CLASS WIDGET
 widget::widget(W& window, Z_IND_T zindex) : w_{window}, z_index_{zindex} {}
 widget::~widget() = default;
@@ -304,6 +304,6 @@ void TextButton::draw() const {
 void TextButton::setPosition(sf::Vector2f& pos) {
   Box::setPosition(pos);
   textObj_->setPosition(pos);
-}
+}*/
 
 }  // namespace IsoRPG
