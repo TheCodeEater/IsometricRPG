@@ -49,7 +49,7 @@ class windowDisplayBase {
   virtual ~windowDisplayBase();
 
   virtual void display() const = 0;
-  virtual void onClick(sf::Event const&) = 0;
+  virtual void onEvent(sf::Event const&) = 0;
 };
 // MENU GENERICO
 // Funzionalita
@@ -62,23 +62,23 @@ class windowDisplayBase {
 //  1 - Oggetti del menu (elements_): to be set up by constructor
 
 class Menu : public windowDisplayBase {
-  typedef std::vector<std::unique_ptr<widget>> WIDGET_CONTAINER ;
+  typedef std::vector<std::unique_ptr<BaseWidget>> WIDGET_CONTAINER ;
 
    WIDGET_CONTAINER widgets_;
  protected:
   std::vector<std::unique_ptr<genericObject>> objects_{};
 
   //widget accessing interface
-  std::unique_ptr<widget> make_widget(std::string& data);
+  std::unique_ptr<BaseWidget> make_widget(std::string& data);
   
-  void addWidget(std::unique_ptr<widget>&&);
+  void addWidget(std::unique_ptr<BaseWidget>&&);
   void updateWidgets();
 
  public:
   explicit Menu(W& window);
 
   // events
-  virtual void onClick(sf::Event const&) override;
+  virtual void onEvent(sf::Event const&) override;
 
   // graphics
   virtual void display() const override;
