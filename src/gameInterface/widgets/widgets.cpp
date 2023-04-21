@@ -56,7 +56,7 @@ Widget<graphic_object>::Widget(W& window, short z_index)
 
 template <class graphic_object>
 Widget<graphic_object>::Widget(W& window, graphic_object&& graphic,
-                               short z_index = 0)
+                               short z_index)
     : Widget{window, z_index}, graphicObject_{std::move(graphic)} {}
 // construct from pre existing sfml object
 template <class graphic_object>
