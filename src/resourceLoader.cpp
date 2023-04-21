@@ -2,16 +2,24 @@
 
 namespace IsoRPG {
 
-void resourcesLoader::load(Textures::ID id, std::string const& filename) {
+void resourcesLoader::load(Textures::ID id, std::string const& filename, sf::IntRect r) {
   // build the path to the file
   std::string path = "resources/assets/" + filename;
   // open the file
-  loadFromPath(id, path);
+  loadFromPath(id, path,r);
 }
 
-void resourcesLoader::loadFromPath(Textures::ID id, std::string const& path) {
+void resourcesLoader::loadFromPath(Textures::ID id, std::string const& path, sf::IntRect r) {
   T_ptr texture(new sf::Texture());
-  if (!texture->loadFromFile(path)) {
+  //test wether r is all or not
+  bool loaded{};
+  if(r==sf::IntRect{0,0,0,0}){
+    loaded=texture->loadFromFile(path);
+  }else{
+    loaded=texture->loadFromFile(path,r);
+  }
+
+  if (!loaded) {
     throw std::runtime_error("Resources Loader: cannot load " + path +
                              "\nCheck the working directory");
   } else {

@@ -11,7 +11,7 @@
 
 namespace IsoRPG {
 namespace Textures {
-enum class ID { mainButtonBackground = 0, mainMenuBackground = 1, characterPortrait=2 };
+enum class ID { mainButtonBackground = 0, mainMenuBackground = 1, characterPortrait=2, playButton=3 };
 }
 
 class resourcesLoader {
@@ -26,8 +26,8 @@ class resourcesLoader {
   resourcesLoader operator=(resourcesLoader const&) = delete;
   resourcesLoader operator=(resourcesLoader&&) = delete;
 
-  void load(Textures::ID, std::string const&);
-  void loadFromPath(Textures::ID, std::string const&);
+  void load(Textures::ID, std::string const&,sf::IntRect r={0,0,0,0});
+  void loadFromPath(Textures::ID, std::string const&, sf::IntRect r={0,0,0,0});
 
   const sf::Texture* get(Textures::ID);
 };
