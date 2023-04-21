@@ -284,6 +284,61 @@ class TextButton : public Button {
   void setPosition(sf::Vector2f&) override;
 };*/
 
+// constructor default
+template <class graphic_object>
+Widget<graphic_object>::Widget(W& window, short z_index)
+    : BaseWidget{window, z_index}, graphicObject_{} {}
+
+template <class graphic_object>
+Widget<graphic_object>::Widget(W& window, graphic_object&& graphic,
+                               short z_index)
+    : Widget{window, z_index}, graphicObject_{std::move(graphic)} {}
+// construct from pre existing sfml object
+template <class graphic_object>
+Widget<graphic_object>::Widget(W& window,
+                               std::function<void(GraphicWrapper&)> processFunc,
+                               short z_index)
+    : Widget{window, z_index} {
+  // create wrapper
+  GraphicWrapper g_wrapper{graphicObject_};
+  // apply the function to the wrapper
+  processFunc(g_wrapper);
+}
+//another lambda
+template <class graphic_object>
+Widget<graphic_object>::Widget(W& window, std::function<graphic_object(void)> processFunc, short z_index)
+  : Widget{window, z_index}{
+    graphicObject_=processFunc();
+  }
+
+// wrapper class for graphic objects manipulation in lambdas
+template <class graphic_object>
+Widget<graphic_object>::GraphicWrapper::GraphicWrapper(graphic_object& g)
+    : gObj_{g} {}  // create reference to the object
+
+template <class graphic_object>
+void Widget<graphic_object>::GraphicWrapper::assign(graphic_object&& g) {
+  gObj_ = std::move(g);  // move create graphic object
+}
+
+template <class graphic_object>
+void Widget<graphic_object>::draw() const {
+  // draw underlying graphic object
+  getWindow().draw(graphicObject_);
+}
+
+template <class graphic_object>
+void Widget<graphic_object>::setPosition(sf::Vector2f pos) {
+  // call underlying sfml set position
+  graphicObject_.setPosition(pos);
+}
+
+template <class graphic_object>
+sf::Vector2f Widget<graphic_object>::getPosition() const {
+  // call sfml get position
+  return graphicObject_.getPosition();
+}
+
 }  // namespace IsoRPG
 
 #endif
