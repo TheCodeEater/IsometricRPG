@@ -135,10 +135,18 @@ MainMenu::MainMenu(W& window) : Menu(window), textureManager_{} {
   addWidget(std::move(b));
 
   }
-
-  //create main title
-  addWidget(std::make_unique<TextLine>(w_,sf::Vector2f{300,50},"IsoRPG",f,sf::Color::Green));
   */
+  //create main title
+
+  addWidget(std::make_unique<Widget<sf::Text>>(w_,[this](){
+    //sf::Vector2f{300,50},"IsoRPG",f,sf::Color::Green
+    sf::Text t{"IsoRPG",f};
+    t.setFillColor(sf::Color::Green);
+    t.setPosition(sf::Vector2f{300,500});
+    return t;
+  }));
+  
+
   // sort widgets by z index
   updateWidgets();
 }
