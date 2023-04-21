@@ -44,11 +44,10 @@ class BaseWidget {
     explicit WindowWrapper(W& window);
     void draw(const sf::Drawable& drawable) const;
   };
-  // Z index: determines order of drawing and overlapping
-  short zIndex_{};
-
   // SFML window
   WindowWrapper w_;
+  // Z index: determines order of drawing and overlapping
+  short zIndex_{};
 
   //specific event handlers
 
@@ -96,6 +95,8 @@ class Widget : public BaseWidget {
   // underlying sfml graphic object
   graphic_object graphicObject_;
 public:
+  class GraphicWrapper;
+
   Widget(W& window, short z_index = 0);  // default constructor.
   Widget(W& window, graphic_object&& graphic,
          short z_index = 0);  // takes an object to be moved: the user will not
